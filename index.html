@@ -356,7 +356,9 @@ const ENTRAR_MODULO = {
     const j = await post(MODULOS.drones.api, { accion:'login', usuario:u, clave:c, recordar, ...(publico ? { ...visitante, dispositivo } : {}) });
     if (!j.ok) throw new Error(String(j.error || 'No se pudo entrar a vuelos').replace(/^SESION:\s*/, ''));
     LS.del('vuelosSesion');
-    LS.set('vuelosSesion', { token:j.token, rol:j.rol, nombre:j.nombre, ...(publico ? { visitante } : {}) }, !recordar);
+    const quien = publico ? visitante
+      : j.rol !== 'admin' ? { nombre:String(j.nombre || '').split(' ')[0], apellido:String(j.nombre || '').split(' ').slice(1).join(' '), correo:'' } : null;
+    LS.set('vuelosSesion', { token:j.token, rol:j.rol, nombre:j.nombre, ...(quien ? { visitante:quien } : {}) }, !recordar);
     return j;
   },
   async calibracion(u, c, recordar){
