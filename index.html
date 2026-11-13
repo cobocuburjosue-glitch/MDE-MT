@@ -83,7 +83,6 @@ input:focus{border-color:var(--verde)}
 .heroe .linea::after{transform:scaleX(-1)}
 .sigla{display:inline-block;font:700 13px "League Spartan";letter-spacing:.3em;color:var(--verde);border:1px solid rgba(45,226,166,.45);border-radius:999px;padding:3px 12px 3px 15px}
 .mosaico{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-.mosaico.tres .t-catal{grid-column:1/-1}
 .tile{position:relative;min-height:190px;border-radius:var(--radio);overflow:hidden;text-align:left;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;
   border:1px solid rgba(45,226,166,.45);box-shadow:0 0 0 1px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.45),inset 0 0 30px rgba(45,226,166,.08);
   background:
@@ -251,7 +250,7 @@ input:focus{border-color:var(--verde)}
       <button class="chip-salir" type="button" data-ir="inicio">← Portada</button>
       <h1>REPORTES <span>MDE MT</span></h1>
     </div>
-    <p class="nota">Genere un reporte desde aquí y quedará anotado en su grupo. El historial se guarda en este dispositivo.</p>
+    <p class="nota">Genere un reporte desde aquí y quedará anotado en su grupo (hoja REPORTES de USUARIOS MDE MT).</p>
     <div class="filtros" id="filtrosRep"></div>
     <div id="gruposRep"></div>
     <p style="text-align:right"><button class="chip-salir" type="button" id="btnBorrarHist">Borrar historial</button></p>
@@ -280,7 +279,11 @@ input:focus{border-color:var(--verde)}
    (https://cobocuburjosue-glitch.github.io/MDE-MT/), así que comparte
    el almacenamiento del navegador con ellas y les deja la sesión abierta.
    ===================================================================== */
-const ADMINISTRADORES = ['COBO'];          // además de quien tenga rol admin en la hoja de vuelos
+/* URL /exec del Apps Script de la hoja "USUARIOS MDE MT" (lista única de usuarios).
+   Mientras diga PEGAR…, la portada valida con la app de vuelos como antes. */
+const API_MDE = 'PEGAR_AQUI_LA_URL_DEL_APPS_SCRIPT_USUARIOS_MDE_MT';
+const HAY_CENTRAL = /^https:\/\/script\.google\.com\//.test(API_MDE);
+const ADMINISTRADORES = ['COBO'];          // respaldo si la hoja central aún no está
 
 const MODULOS = {
   drones: {
@@ -342,12 +345,20 @@ async function post(url, cuerpo, ms = 30000){
 
 /* ============================ sesión ============================ */
 let SES = LS.get('mdeSesion') || LS.get('mdeSesion', true);
-const esAdmin = () => !!SES && (SES.rol === 'admin' || ADMINISTRADORES.includes(norm(SES.usuario)));
+const esAdmin = () => !!SES && (SES.rol === 'admin' || SES.rol === 'ADMINISTRADOR' || (!HAY_CENTRAL && ADMINISTRADORES.includes(norm(SES.usuario))));
+const puede = k => !SES || !SES.modulos || SES.modulos[k] !== false;
 
 /* Inicia sesión en cada app con el mismo usuario y contraseña, y deja la sesión
    guardada donde cada app la busca al abrir. Si un usuario no existe en la hoja
    de esa app, la app mostrará su propio ingreso. */
 const ENTRAR_MODULO = {
+  async drones(u, c, recordar, publico, visitante, dispositivo){
+    const j = await post(MODULOS.drones.api, { accion:'login', usuario:u, clave:c, recordar, ...(publico ? { ...visitante, dispositivo } : {}) });
+    if (!j.ok) throw new Error(String(j.error || 'No se pudo entrar a vuelos').replace(/^SESION:\s*/, ''));
+    LS.del('vuelosSesion');
+    LS.set('vuelosSesion', { token:j.token, rol:j.rol, nombre:j.nombre, ...(publico ? { visitante } : {}) }, !recordar);
+    return j;
+  },
   async calibracion(u, c, recordar){
     const j = await post(MODULOS.calibracion.api, { action:'login', usuario:u, password:c });
     if (!j.ok) throw new Error(j.error);
@@ -380,23 +391,27 @@ $('#formLogin').addEventListener('submit', async ev => {
   }
   b.disabled = true; b.textContent = 'Ingresando…'; err.textContent = '';
   try {
-    /* 1) Los usuarios viven en la hoja de VUELOS DRONES */
     const dispositivo = /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent) ? 'Teléfono (MDE MT)' : 'Computadora (MDE MT)';
-    const j = await post(MODULOS.drones.api, { accion:'login', usuario, clave, recordar, ...(publico ? { ...visitante, dispositivo } : {}) });
-    if (!j.ok){
-      if (j.falta === 'correo') mostrarPublico(true);
-      throw new Error(String(j.error || 'Usuario o contraseña incorrectos.').replace(/^SESION:\s*/, ''));
+    let base;
+    if (HAY_CENTRAL){
+      /* 1) Lista única de usuarios: hoja USUARIOS MDE MT */
+      const j = await post(API_MDE, { action:'login', usuario, clave, dispositivo, ...(publico ? visitante : {}) });
+      if (!j.ok){ if (j.falta === 'correo') mostrarPublico(true); throw new Error(j.error || 'Usuario o contraseña incorrectos.'); }
+      base = { usuario:j.usuario, nombre:j.nombre, rol:j.rol, modulos:j.modulos, token:j.token };
+    } else {
+      /* 1) Respaldo: validar con la app de vuelos */
+      const j = await ENTRAR_MODULO.drones(usuario, clave, recordar, publico, visitante, dispositivo);
+      base = { usuario:norm(usuario), nombre:j.nombre || usuario, rol:j.rol, modulos:null };
     }
-    const sesVuelos = { token:j.token, rol:j.rol, nombre:j.nombre, ...(publico ? { visitante } : {}) };
-    LS.del('vuelosSesion'); LS.set('vuelosSesion', sesVuelos, !recordar);
 
-    /* 2) Las otras dos apps, en paralelo */
+    /* 2) Entrar a cada módulo permitido, en paralelo */
     b.textContent = 'Conectando módulos…';
+    const lista = Object.keys(ENTRAR_MODULO).filter(k => (HAY_CENTRAL || k !== 'drones') && (!base.modulos || base.modulos[k] !== false));
+    const res = await Promise.allSettled(lista.map(k => ENTRAR_MODULO[k](usuario, clave, recordar, publico, visitante, dispositivo)));
     const mods = { drones:true };
-    const res = await Promise.allSettled(Object.keys(ENTRAR_MODULO).map(k => ENTRAR_MODULO[k](usuario, clave, recordar).then(() => k)));
-    Object.keys(ENTRAR_MODULO).forEach((k, i) => mods[k] = res[i].status === 'fulfilled');
+    lista.forEach((k, i) => mods[k] = res[i].status === 'fulfilled');
 
-    SES = { usuario: norm(usuario), nombre: j.nombre || usuario, rol: j.rol, mods, recordar };
+    SES = { ...base, mods, recordar };
     LS.del('mdeSesion'); LS.set('mdeSesion', SES, !recordar);
     $('#clave').value = '';
     ['#logNombre','#logApellido','#logCorreo'].forEach(id => $(id).value = '');
@@ -410,6 +425,7 @@ function cerrarSesion(){
   if (ses && ses.token) post(MODULOS.catalogo.api, { action:'logout', token:ses.token }).catch(() => {});
   const ct = (() => { try { return localStorage.getItem('cal_token'); } catch(e){ return null; } })();
   if (ct) post(MODULOS.calibracion.api, { action:'logout', token:ct }).catch(() => {});
+  if (SES && SES.token && HAY_CENTRAL) post(API_MDE, { action:'logout', token:SES.token }).catch(() => {});
   ['mdeSesion','vuelosSesion','cal_token','cal_c_sesion','cat_ses','cat_datos'].forEach(LS.del);
   SES = null;
   $('#marcos').querySelectorAll('iframe').forEach(f => f.remove());
@@ -430,7 +446,9 @@ function entrarPortada(){
   $('#rolTxt').textContent = esAdmin() ? 'Administrador' : 'Usuario';
   $('#iniciales').textContent = nom.split(/\s+/).map(x => x[0]).join('').slice(0, 2).toUpperCase();
   $('#tileReportes').classList.toggle('oculto', !esAdmin());
-  $('#mosaico').classList.toggle('tres', !esAdmin());
+  ['drones','calibracion','catalogo'].forEach(k => $(`[data-abrir="${k}"]`).classList.toggle('oculto', !puede(k)));
+  const vis = $$('#mosaico .tile').filter(t => !t.classList.contains('oculto'));
+  vis.forEach((t, i) => t.style.gridColumn = (vis.length % 2 && i === vis.length - 1) ? '1 / -1' : '');
   $$('[data-estado]').forEach(e => {
     const ok = SES.mods ? SES.mods[e.dataset.estado] !== false : true;
     e.textContent = ok ? '● conectado' : 'pedirá ingreso';
@@ -442,7 +460,7 @@ function ir(dest){ if (location.hash !== '#' + dest) location.hash = dest; else 
 function router(){
   if (!SES) return mostrar('login');
   const d = location.hash.replace('#', '') || 'inicio';
-  if (MODULOS[d]) return abrirModulo(d);
+  if (MODULOS[d] && puede(d)) return abrirModulo(d);
   if (d === 'reportes' && esAdmin()){ pintarReportes(); return mostrar('reportes'); }
   mostrar('portada');
 }
@@ -489,6 +507,7 @@ function esperarListo(f, ms = 25000){
 const HIST = 'mde_reportes';
 const leerHist = () => LS.get(HIST) || [];
 function anotarReporte(k){
+  if (HAY_CENTRAL && SES && SES.token) post(API_MDE, { action:'reporte', token:SES.token, modulo:k }).catch(() => {});
   const h = leerHist();
   h.unshift({ mod:k, fecha:new Date().toISOString(), usuario: SES ? SES.nombre : '' });
   LS.set(HIST, h.slice(0, 300));
@@ -510,14 +529,20 @@ function generarReporte(k){
   });
 }
 let filtroRep = '';
-function pintarReportes(){
-  const h = leerHist();
+let HIST_CENTRAL = null;
+async function cargarReportes(){
+  if (!HAY_CENTRAL || !SES || !SES.token) return;
+  try { const j = await post(API_MDE, { action:'reportes', token:SES.token }); if (j.ok){ HIST_CENTRAL = j.reportes; pintarReportes(true); } } catch(e){}
+}
+function pintarReportes(yaCargado){
+  if (!yaCargado) cargarReportes();
+  const h = HIST_CENTRAL || leerHist();
   $('#filtrosRep').innerHTML = [['', 'Todos'], ...Object.entries(MODULOS).map(([k, m]) => [k, m.nombre])]
     .map(([k, n]) => `<button type="button" data-frep="${k}" class="${filtroRep === k ? 'activo' : ''}">${esc(n)} <small>(${k ? h.filter(x => x.mod === k).length : h.length})</small></button>`).join('');
   const fmt = new Intl.DateTimeFormat('es-GT', { dateStyle:'medium', timeStyle:'short', timeZone:'America/Guatemala' });
   $('#gruposRep').innerHTML = Object.entries(MODULOS).filter(([k]) => !filtroRep || filtroRep === k).map(([k, m]) => {
     const lista = h.filter(x => x.mod === k);
-    const filas = lista.slice(0, 50).map((x, i) => `<tr><td>${lista.length - i}</td><td>${esc(fmt.format(new Date(x.fecha)))}</td><td>${esc(x.usuario)}</td></tr>`).join('');
+    const filas = lista.slice(0, 50).map((x, i) => `<tr><td>${lista.length - i}</td><td>${esc(isNaN(new Date(x.fecha)) || HIST_CENTRAL ? x.fecha : fmt.format(new Date(x.fecha)))}</td><td>${esc(x.usuario)}</td></tr>`).join('');
     return `<section class="grupo">
       <header>${ICONOS[k]}<div><h2>${esc(m.nombre.toUpperCase())}</h2><p>${esc(m.descRep)}</p></div>
         <div class="cuenta">${lista.length}<small>generados</small></div>
@@ -530,6 +555,7 @@ $('#reportes').addEventListener('click', ev => {
   const f = ev.target.closest('[data-frep]'); if (f){ filtroRep = f.dataset.frep; pintarReportes(); return; }
   const g = ev.target.closest('[data-genrep]'); if (g){ generarReporte(g.dataset.genrep); return; }
 });
+$('#btnBorrarHist').classList.toggle('oculto', HAY_CENTRAL);
 $('#btnBorrarHist').onclick = () => { if (confirm('¿Borrar el historial de reportes de este dispositivo?')){ LS.del(HIST); pintarReportes(); } };
 
 /* ============================ inicio ============================ */
