@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=League+Spartan:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 /* =====================================================================
    MDE MT · Malezas, Drones y Equipos — Ingenio Madre Tierra
@@ -26,7 +26,7 @@ html,body{height:100%}
 body{background:var(--fondo);color:var(--texto);font:15px/1.45 "Barlow",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 .oculto{display:none!important}
-h1,h2,h3,.cond{font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing:.02em}
+h1,h2,h3,.cond{font-family:"League Spartan","Barlow",sans-serif;font-weight:800;letter-spacing:0}
 
 /* ---------- fondo general (imagen opcional fondos/portada.jpg) ---------- */
 .escena{min-height:100vh;min-height:100dvh;
@@ -42,7 +42,7 @@ h1,h2,h3,.cond{font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing
   box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(45,226,166,.06);backdrop-filter:blur(6px)}
 .login-caja header{text-align:center;padding:26px 24px 18px;border-bottom:1px solid var(--linea)}
 .login-caja header img{height:104px;display:block;margin:0 auto 12px;filter:drop-shadow(0 6px 22px rgba(45,226,166,.3))}
-.login-caja h1{font-size:34px;line-height:1;color:#fff}
+.login-caja h1{font-size:30px;line-height:1.05;color:#fff}
 .login-caja h1 span{color:var(--verde)}
 .login-caja header p{color:var(--suave);font-size:14px;margin-top:4px;text-transform:uppercase;letter-spacing:.12em}
 .login-caja form{padding:22px 24px 24px;display:grid;gap:14px}
@@ -65,7 +65,7 @@ input:focus{border-color:var(--verde)}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0}
 .marca{display:flex;align-items:center;gap:10px}
 .marca img{height:40px}
-.marca b{font:800 20px "Barlow Condensed";letter-spacing:.12em}
+.marca b{font:800 20px "League Spartan";letter-spacing:.12em}
 .marca b span{color:var(--verde)}
 .yo{display:flex;align-items:center;gap:10px;background:rgba(10,19,21,.75);border:1px solid var(--linea);border-radius:999px;padding:5px 6px 5px 6px;backdrop-filter:blur(6px)}
 .yo .ini{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,var(--verde),var(--verde2));color:#03140f;font-weight:700;font-size:14px}
@@ -76,12 +76,12 @@ input:focus{border-color:var(--verde)}
 .heroe{text-align:center;padding:26px 0 30px}
 .heroe .logo{height:130px;display:block;margin:0 auto 18px;filter:drop-shadow(0 8px 30px rgba(45,226,166,.25))}
 .heroe .saludo{color:var(--verde);font-weight:600;letter-spacing:.06em;font-size:15px}
-.heroe h1{font-size:clamp(34px,7vw,60px);line-height:.95;color:#fff;margin-top:6px;text-shadow:0 2px 24px rgba(0,0,0,.6)}
+.heroe h1{font-size:clamp(30px,6.4vw,56px);line-height:1;color:#fff;margin-top:6px;text-shadow:0 2px 24px rgba(0,0,0,.6)}
 .heroe h1 span{color:var(--verde)}
 .heroe .linea{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:14px;color:#cfe0dc;font-size:15px}
 .heroe .linea::before,.heroe .linea::after{content:"";height:1px;width:min(80px,12vw);background:linear-gradient(90deg,transparent,var(--verde))}
 .heroe .linea::after{transform:scaleX(-1)}
-.sigla{display:inline-block;font:700 13px "Barlow Condensed";letter-spacing:.3em;color:var(--verde);border:1px solid rgba(45,226,166,.45);border-radius:999px;padding:3px 12px 3px 15px}
+.sigla{display:inline-block;font:700 13px "League Spartan";letter-spacing:.3em;color:var(--verde);border:1px solid rgba(45,226,166,.45);border-radius:999px;padding:3px 12px 3px 15px}
 .mosaico{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .mosaico.tres .t-catal{grid-column:1/-1}
 .tile{position:relative;min-height:190px;border-radius:var(--radio);overflow:hidden;text-align:left;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;
@@ -93,7 +93,7 @@ input:focus{border-color:var(--verde)}
   transition:transform .18s,box-shadow .18s,border-color .18s}
 .tile:hover,.tile:focus-visible{transform:translateY(-3px);border-color:var(--verde);box-shadow:0 0 0 1px var(--verde),0 14px 36px rgba(0,0,0,.5),0 0 28px rgba(45,226,166,.25);outline:none}
 .tile svg{width:46px;height:46px;stroke:#fff;margin-bottom:8px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6))}
-.tile h2{font-size:clamp(20px,3.4vw,26px);line-height:1.05;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.7)}
+.tile h2{font-size:clamp(18px,3vw,24px);line-height:1.1;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.7)}
 .tile small{color:#cfe2dd;font-size:13px;margin-top:4px}
 .tile::after{content:"";display:block;width:42px;height:4px;border-radius:4px;background:var(--verde);margin-top:12px;transition:width .2s}
 .tile:hover::after,.tile:focus-visible::after{width:90px}
@@ -119,7 +119,7 @@ input:focus{border-color:var(--verde)}
 .barra .volver svg{width:18px;height:18px}
 .barra h2{font-size:20px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .barra h2 span{color:var(--verde)}
-.barra .sigla{font:700 12px "Barlow Condensed";letter-spacing:.25em;color:var(--suave)}
+.barra .sigla{font:700 12px "League Spartan";letter-spacing:.25em;color:var(--suave)}
 .marcos{flex:1;position:relative}
 .marcos iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
 .cargando{position:absolute;inset:0;display:grid;place-items:center;color:var(--suave);background:var(--fondo);z-index:2}
@@ -140,7 +140,7 @@ input:focus{border-color:var(--verde)}
 .grupo header div{flex:1;min-width:180px}
 .grupo h2{font-size:22px;line-height:1.1}
 .grupo header p{color:var(--suave);font-size:13px}
-.grupo .cuenta{font:700 26px "Barlow Condensed";color:var(--verde);text-align:right;line-height:1}
+.grupo .cuenta{font:700 26px "League Spartan";color:var(--verde);text-align:right;line-height:1}
 .grupo .cuenta small{display:block;font:400 11px "Barlow";color:var(--suave);letter-spacing:.08em;text-transform:uppercase}
 .grupo table{width:100%;border-collapse:collapse;font-size:14px}
 .grupo th,.grupo td{padding:9px 18px;text-align:left;border-bottom:1px solid rgba(29,58,53,.6)}
