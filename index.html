@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MDE MT · Malezas y Madurantes</title>
+<meta name="theme-color" content="#04080a">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================
+   MDE MT · Malezas, Drones y Equipos — Ingenio Madre Tierra
+   Las imágenes de fondo se cambian en la carpeta fondos/ (ver README)
+   ===================================================================== */
+:root{
+  --fondo:#04080a; --panel:#0a1315; --panel2:#0e1a1c; --linea:#1d3a35;
+  --verde:#2de2a6; --verde2:#1fb985; --texto:#e8f4f1; --suave:#93aca6; --alerta:#ff6b7d;
+  --radio:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--fondo);color:var(--texto);font:15px/1.45 "Barlow",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+.oculto{display:none!important}
+h1,h2,h3,.cond{font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing:.02em}
+
+/* ---------- fondo general (imagen opcional fondos/portada.jpg) ---------- */
+.escena{min-height:100vh;min-height:100dvh;
+  background:
+    linear-gradient(180deg,rgba(4,8,10,.55) 0,rgba(4,8,10,.85) 38%,var(--fondo) 70%),
+    url("fondos/portada.jpg") center top/cover no-repeat,
+    radial-gradient(900px 500px at 50% -10%,#0d3a30 0,transparent 70%),
+    var(--fondo);}
+
+/* ---------- LOGIN ---------- */
+#login{display:grid;place-items:center;padding:28px 16px}
+.login-caja{width:min(400px,100%);background:rgba(10,19,21,.92);border:1px solid var(--linea);border-radius:22px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(45,226,166,.06);backdrop-filter:blur(6px)}
+.login-caja header{text-align:center;padding:26px 24px 18px;border-bottom:1px solid var(--linea)}
+.login-caja header img{height:104px;display:block;margin:0 auto 12px;filter:drop-shadow(0 6px 22px rgba(45,226,166,.3))}
+.login-caja h1{font-size:34px;line-height:1;color:#fff}
+.login-caja h1 span{color:var(--verde)}
+.login-caja header p{color:var(--suave);font-size:14px;margin-top:4px;text-transform:uppercase;letter-spacing:.12em}
+.login-caja form{padding:22px 24px 24px;display:grid;gap:14px}
+label{display:block;font-weight:600;font-size:14px;margin-bottom:5px}
+input[type=text],input[type=password],input[type=email]{width:100%;min-height:46px;padding:10px 13px;border-radius:12px;border:1px solid var(--linea);
+  background:rgba(4,10,12,.7);color:var(--texto);font:inherit;outline:none;transition:border-color .15s}
+input:focus{border-color:var(--verde)}
+.recordar{display:flex;gap:8px;align-items:center;font-weight:400;margin:0;color:var(--suave)}
+.recordar input{accent-color:var(--verde);width:18px;height:18px}
+.btn{min-height:46px;border-radius:12px;padding:10px 18px;font-weight:600;background:var(--panel2);border:1px solid var(--linea)}
+.btn.prim{background:linear-gradient(180deg,var(--verde),var(--verde2));color:#03140f;border:0;font-size:16px}
+.btn:disabled{opacity:.6;cursor:default}
+.error{color:var(--alerta);font-size:14px;min-height:1.2em}
+.nota{color:var(--suave);font-size:13px}
+#datosPublico{display:grid;gap:12px;padding:12px;border:1px dashed var(--linea);border-radius:12px}
+
+/* ---------- PORTADA ---------- */
+#portada{display:flex;flex-direction:column;padding:0 16px}
+.marco{width:min(980px,100%);margin:0 auto;flex:1;display:flex;flex-direction:column}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0}
+.marca{display:flex;align-items:center;gap:10px}
+.marca img{height:40px}
+.marca b{font:800 20px "Barlow Condensed";letter-spacing:.12em}
+.marca b span{color:var(--verde)}
+.yo{display:flex;align-items:center;gap:10px;background:rgba(10,19,21,.75);border:1px solid var(--linea);border-radius:999px;padding:5px 6px 5px 6px;backdrop-filter:blur(6px)}
+.yo .ini{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,var(--verde),var(--verde2));color:#03140f;font-weight:700;font-size:14px}
+.yo .txt{font-size:13px;line-height:1.15;padding-right:4px}
+.yo .txt small{display:block;color:var(--suave);font-size:11px}
+.chip-salir{font-size:13px;padding:6px 12px;border:1px solid var(--linea);border-radius:999px;background:rgba(10,19,21,.7)}
+.chip-salir:hover{border-color:var(--verde);color:var(--verde)}
+.heroe{text-align:center;padding:26px 0 30px}
+.heroe .logo{height:130px;display:block;margin:0 auto 18px;filter:drop-shadow(0 8px 30px rgba(45,226,166,.25))}
+.heroe .saludo{color:var(--verde);font-weight:600;letter-spacing:.06em;font-size:15px}
+.heroe h1{font-size:clamp(34px,7vw,60px);line-height:.95;color:#fff;margin-top:6px;text-shadow:0 2px 24px rgba(0,0,0,.6)}
+.heroe h1 span{color:var(--verde)}
+.heroe .linea{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:14px;color:#cfe0dc;font-size:15px}
+.heroe .linea::before,.heroe .linea::after{content:"";height:1px;width:min(80px,12vw);background:linear-gradient(90deg,transparent,var(--verde))}
+.heroe .linea::after{transform:scaleX(-1)}
+.sigla{display:inline-block;font:700 13px "Barlow Condensed";letter-spacing:.3em;color:var(--verde);border:1px solid rgba(45,226,166,.45);border-radius:999px;padding:3px 12px 3px 15px}
+.mosaico{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.mosaico.tres .t-catal{grid-column:1/-1}
+.tile{position:relative;min-height:190px;border-radius:var(--radio);overflow:hidden;text-align:left;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;
+  border:1px solid rgba(45,226,166,.45);box-shadow:0 0 0 1px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.45),inset 0 0 30px rgba(45,226,166,.08);
+  background:
+    linear-gradient(180deg,rgba(4,8,10,.05) 20%,rgba(4,8,10,.88) 100%),
+    var(--img) center/cover no-repeat,
+    var(--falla);
+  transition:transform .18s,box-shadow .18s,border-color .18s}
+.tile:hover,.tile:focus-visible{transform:translateY(-3px);border-color:var(--verde);box-shadow:0 0 0 1px var(--verde),0 14px 36px rgba(0,0,0,.5),0 0 28px rgba(45,226,166,.25);outline:none}
+.tile svg{width:46px;height:46px;stroke:#fff;margin-bottom:8px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6))}
+.tile h2{font-size:clamp(20px,3.4vw,26px);line-height:1.05;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.7)}
+.tile small{color:#cfe2dd;font-size:13px;margin-top:4px}
+.tile::after{content:"";display:block;width:42px;height:4px;border-radius:4px;background:var(--verde);margin-top:12px;transition:width .2s}
+.tile:hover::after,.tile:focus-visible::after{width:90px}
+.tile .ir{position:absolute;right:16px;bottom:16px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(45,226,166,.5);background:rgba(4,8,10,.6);transition:.2s}
+.tile .ir svg{width:18px;height:18px;margin:0;stroke:var(--verde);filter:none}
+.tile:hover .ir{background:var(--verde)}
+.tile:hover .ir svg{stroke:#03140f}
+.tile .estado{position:absolute;top:12px;right:12px;font-size:11px;padding:3px 9px;border-radius:999px;background:rgba(4,8,10,.75);border:1px solid var(--linea);color:var(--suave)}
+.tile .estado.ok{color:var(--verde);border-color:rgba(45,226,166,.5)}
+.t-drones{--img:url("fondos/dashboard-drones.jpg");--falla:radial-gradient(circle at 70% 25%,#2a6a55 0,#0b2420 55%,#06110f 100%)}
+.t-calib {--img:url("fondos/calibracion-boquillas.jpg");--falla:radial-gradient(circle at 70% 25%,#2d5566 0,#0c1d25 55%,#060d11 100%)}
+.t-catal {--img:url("fondos/catalogo-equipos.jpg");--falla:radial-gradient(circle at 70% 25%,#4d6a2a 0,#17240c 55%,#0a1106 100%)}
+.t-report{--img:url("fondos/reportes.jpg");--falla:radial-gradient(circle at 70% 25%,#1f5a63 0,#0b1f24 55%,#050d10 100%)}
+
+.pie{margin:30px 0 20px;padding-top:16px;border-top:1px solid var(--linea);display:flex;align-items:center;justify-content:center;gap:10px;color:var(--suave);font-size:13px;text-align:center}
+.pie .rayas{width:34px;height:10px;background:repeating-linear-gradient(115deg,var(--verde) 0 4px,transparent 4px 9px)}
+
+/* ---------- MÓDULO (app dentro de la portada) ---------- */
+#modulo{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--fondo);z-index:20}
+.barra{display:flex;align-items:center;gap:10px;padding:8px 12px;padding-top:max(8px,env(safe-area-inset-top));background:#060c0e;border-bottom:1px solid var(--linea);min-height:52px}
+.barra .volver{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:10px;border:1px solid var(--linea);font-weight:600;font-size:14px}
+.barra .volver:hover{border-color:var(--verde);color:var(--verde)}
+.barra .volver svg{width:18px;height:18px}
+.barra h2{font-size:20px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.barra h2 span{color:var(--verde)}
+.barra .sigla{font:700 12px "Barlow Condensed";letter-spacing:.25em;color:var(--suave)}
+.marcos{flex:1;position:relative}
+.marcos iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+.cargando{position:absolute;inset:0;display:grid;place-items:center;color:var(--suave);background:var(--fondo);z-index:2}
+.giro{width:34px;height:34px;border-radius:50%;border:3px solid var(--linea);border-top-color:var(--verde);animation:g 0.8s linear infinite;margin:0 auto 10px}
+@keyframes g{to{transform:rotate(360deg)}}
+
+/* ---------- REPORTES ---------- */
+#reportes{padding:0 16px 30px}
+.rep-cab{display:flex;align-items:center;gap:12px;padding:20px 0 6px;flex-wrap:wrap}
+.rep-cab h1{font-size:34px;flex:1}
+.rep-cab h1 span{color:var(--verde)}
+.filtros{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}
+.filtros button{padding:7px 14px;border-radius:999px;border:1px solid var(--linea);background:rgba(10,19,21,.8);font-size:14px}
+.filtros button.activo{background:var(--verde);color:#03140f;border-color:var(--verde);font-weight:600}
+.grupo{background:rgba(10,19,21,.92);border:1px solid var(--linea);border-radius:var(--radio);margin-bottom:16px;overflow:hidden}
+.grupo header{display:flex;align-items:center;gap:14px;padding:16px 18px;border-bottom:1px solid var(--linea);flex-wrap:wrap}
+.grupo header svg{width:34px;height:34px;stroke:var(--verde);flex:none}
+.grupo header div{flex:1;min-width:180px}
+.grupo h2{font-size:22px;line-height:1.1}
+.grupo header p{color:var(--suave);font-size:13px}
+.grupo .cuenta{font:700 26px "Barlow Condensed";color:var(--verde);text-align:right;line-height:1}
+.grupo .cuenta small{display:block;font:400 11px "Barlow";color:var(--suave);letter-spacing:.08em;text-transform:uppercase}
+.grupo table{width:100%;border-collapse:collapse;font-size:14px}
+.grupo th,.grupo td{padding:9px 18px;text-align:left;border-bottom:1px solid rgba(29,58,53,.6)}
+.grupo th{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--suave);font-weight:600}
+.grupo tr:last-child td{border-bottom:0}
+.grupo .vacio{padding:16px 18px;color:var(--suave);font-size:14px}
+
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#0f1f1c;border:1px solid var(--verde);color:var(--texto);padding:10px 16px;border-radius:12px;z-index:50;max-width:92vw;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+
+@media (max-width:640px){
+  .marca b{display:none}
+  .yo .txt{display:none}
+  .heroe{padding:12px 0 22px}
+  .heroe .logo{height:92px}
+  .tile .ir{display:none}
+  .mosaico{gap:12px}
+  .tile{min-height:150px;padding:14px}
+  .tile svg{width:36px;height:36px}
+  .barra .sigla{display:none}
+  .grupo th:nth-child(3),.grupo td:nth-child(3){display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================ LOGIN ============================ -->
+<section id="login" class="escena">
+  <div class="login-caja">
+    <header>
+      <img src="logo.png" alt="Ingenio Madre Tierra">
+      <h1>MALEZAS Y <span>MADURANTES</span></h1>
+      <p style="margin-top:10px"><span class="sigla">MDE MT</span></p>
+    </header>
+    <form id="formLogin" autocomplete="on">
+      <div><label for="usuario">Usuario</label><input type="text" id="usuario" autocomplete="username" autocapitalize="characters" required></div>
+      <div><label for="clave">Contraseña</label><input type="password" id="clave" autocomplete="current-password" required></div>
+      <div id="datosPublico" class="oculto">
+        <p class="nota">Usuario público: escriba sus datos para registrar su ingreso.</p>
+        <div><label for="logNombre">Nombre</label><input type="text" id="logNombre" autocomplete="given-name"></div>
+        <div><label for="logApellido">Apellido</label><input type="text" id="logApellido" autocomplete="family-name"></div>
+        <div><label for="logCorreo">Correo</label><input type="email" id="logCorreo" autocomplete="email"></div>
+      </div>
+      <label class="recordar"><input type="checkbox" id="recordar" checked> Mantener la sesión en este dispositivo</label>
+      <button class="btn prim" id="btnEntrar" type="submit">Ingresar</button>
+      <p class="error" id="loginError" role="alert"></p>
+    </form>
+  </div>
+</section>
+
+<!-- ============================ PORTADA ============================ -->
+<section id="portada" class="escena oculto">
+  <div class="marco">
+    <div class="top">
+      <div class="marca"><img src="logo.png" alt=""><b>MDE <span>MT</span></b></div>
+      <div class="yo">
+        <span class="ini" id="iniciales">MT</span>
+        <span class="txt"><b id="quien"></b><small id="rolTxt"></small></span>
+        <button class="chip-salir" id="btnSalir" type="button">Salir</button>
+      </div>
+    </div>
+
+    <div class="heroe">
+      <img class="logo" src="logo.png" alt="Ingenio Madre Tierra">
+      <div class="saludo" id="saludo">Bienvenido</div>
+      <h1>MALEZAS Y <span>MADURANTES</span></h1>
+      <div class="linea"><span>Drones y equipos</span><span class="sigla">MDE MT</span></div>
+      <p class="nota" style="margin-top:10px">Seleccione el módulo que desea utilizar</p>
+    </div>
+
+    <div class="mosaico" id="mosaico">
+      <button class="tile t-drones" data-abrir="drones" type="button">
+        <span class="estado" data-estado="drones"></span>
+        <svg viewBox="0 0 48 48" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h12M32 12h12M10 12v4M38 12v4"/><path d="M10 16h28"/><rect x="18" y="16" width="12" height="9" rx="2"/><path d="M20 25l-3 7M28 25l3 7M24 25v4"/><path d="M17 38l-1 4M24 34v6M31 38l1 4" opacity=".7"/></svg>
+        <h2>DASHBOARD<br>DRONES</h2>
+        <small>Vuelos DJI · variación real vs L/ha</small>
+        <span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </button>
+      <button class="tile t-calib" data-abrir="calibracion" type="button">
+        <span class="estado" data-estado="calibracion"></span>
+        <svg viewBox="0 0 48 48" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8h32"/><path d="M24 8v8"/><rect x="18" y="16" width="12" height="7" rx="1.5"/><path d="M21 23l-1 4h8l-1-4"/><path d="M24 30l-10 12M24 30l-4 13M24 30v13M24 30l4 13M24 30l10 12" opacity=".8"/></svg>
+        <h2>CALIBRACIÓN DE<br>BOQUILLAS DRONE</h2>
+        <small>Registro y análisis por dron</small>
+        <span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </button>
+      <button class="tile t-catal" data-abrir="catalogo" type="button">
+        <span class="estado" data-estado="catalogo"></span>
+        <svg viewBox="0 0 48 48" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 30V20h14l4 8h12a4 4 0 0 1 4 4v2"/><path d="M14 20v-8h8l3 8"/><circle cx="14" cy="34" r="7"/><circle cx="14" cy="34" r="2"/><circle cx="36" cy="37" r="4"/><path d="M21 36h11"/></svg>
+        <h2>CATÁLOGO<br>DE EQUIPO</h2>
+        <small>Taller, campo y ubicación de equipos</small>
+        <span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </button>
+      <button class="tile t-report" data-abrir="reportes" id="tileReportes" type="button">
+        <svg viewBox="0 0 48 48" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M28 5H11v38h26V14z"/><path d="M28 5v9h9"/><path d="M17 36v-6M23 36V24M29 36v-9"/></svg>
+        <h2>REPORTES</h2>
+        <small>Generados por grupo · solo administrador</small>
+        <span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </button>
+    </div>
+
+    <div class="pie"><span class="rayas"></span><span>Departamento de Malezas y Madurantes · Ingenio Madre Tierra</span></div>
+  </div>
+</section>
+
+<!-- ============================ REPORTES ============================ -->
+<section id="reportes" class="escena oculto">
+  <div class="marco">
+    <div class="rep-cab">
+      <button class="chip-salir" type="button" data-ir="inicio">← Portada</button>
+      <h1>REPORTES <span>MDE MT</span></h1>
+    </div>
+    <p class="nota">Genere un reporte desde aquí y quedará anotado en su grupo. El historial se guarda en este dispositivo.</p>
+    <div class="filtros" id="filtrosRep"></div>
+    <div id="gruposRep"></div>
+    <p style="text-align:right"><button class="chip-salir" type="button" id="btnBorrarHist">Borrar historial</button></p>
+  </div>
+</section>
+
+<!-- ============================ MÓDULO ============================ -->
+<section id="modulo" class="oculto">
+  <div class="barra">
+    <button class="volver" type="button" data-ir="inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Portada</button>
+    <h2 id="tituloModulo"></h2>
+    <span class="sigla">MDE MT</span>
+  </div>
+  <div class="marcos" id="marcos">
+    <div class="cargando" id="cargando"><div><div class="giro"></div>Abriendo módulo…</div></div>
+  </div>
+</section>
+
+<div class="toast oculto" id="toast"></div>
+
+<script>
+/* =====================================================================
+   CONFIGURACIÓN
+   Las tres apps siguen en sus propios repositorios y hojas de Google.
+   Esta portada vive en el mismo dominio de GitHub Pages
+   (https://cobocuburjosue-glitch.github.io/MDE-MT/), así que comparte
+   el almacenamiento del navegador con ellas y les deja la sesión abierta.
+   ===================================================================== */
+const ADMINISTRADORES = ['COBO'];          // además de quien tenga rol admin en la hoja de vuelos
+
+const MODULOS = {
+  drones: {
+    titulo: 'DASHBOARD <span>DRONES</span>', nombre: 'Dashboard Drones',
+    url: '../VUELOS-DRONES/',
+    api: 'https://script.google.com/macros/s/AKfycbzxXuyjqShlBHQUKPWyXimzyjiTTOwwmcaSulh3EJcbYP-0iCNCSlOvb0IKtJyv8qs/exec',
+    abrirReporte: '#btnReporte',            // botón que abre el reporte en la app
+    generaReporte: '#btnImprimir',          // botón que genera el PDF (se anota en el historial)
+    descRep: 'Reporte semanal de vuelos por drone: variación real vs L/ha teóricos, justificaciones.'
+  },
+  calibracion: {
+    titulo: 'CALIBRACIÓN DE <span>BOQUILLAS DRONE</span>', nombre: 'Calibración de boquillas',
+    url: '../CALIBRACION-DRONES/',
+    api: 'https://script.google.com/macros/s/AKfycbx85tTKwFvkPBKEod0q1lTb5rFN7nDxTHyYR7GPs2yQ26xttpHwFRhCu62gkkNxHxmgIw/exec',
+    abrirReporte: '#tRep',
+    generaReporte: '#bReporte',
+    descRep: 'Análisis de calibración de boquillas por dron; el PDF llega al correo del administrador.'
+  },
+  catalogo: {
+    titulo: 'CATÁLOGO <span>DE EQUIPO</span>', nombre: 'Catálogo de equipo',
+    url: '../EQUIPOS-MALEZAS/',
+    api: 'https://script.google.com/macros/s/AKfycbz3N5fZG26mpmfivMX9PmQSoH_xGuwX2diCo4woF4-xWYo4ZI7LiUe-JTBn4RDziTAqPg/exec',
+    abrirReporte: '[data-accion="reporte"]',
+    generaReporte: '#btnPdf',
+    descRep: 'Resumen campo / taller por tipo y zona, equipos atrasados y componentes.'
+  }
+};
+const ICONOS = {
+  drones: document.querySelector('.t-drones svg').outerHTML,
+  calibracion: document.querySelector('.t-calib svg').outerHTML,
+  catalogo: document.querySelector('.t-catal svg').outerHTML
+};
+
+/* ============================ utilidades ============================ */
+const $ = s => document.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const norm = s => String(s || '').trim().toUpperCase();
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LS = {
+  get(k, ses){ try { return JSON.parse((ses ? sessionStorage : localStorage).getItem(k) || 'null'); } catch(e){ return null; } },
+  set(k, v, ses){ try { (ses ? sessionStorage : localStorage).setItem(k, typeof v === 'string' ? v : JSON.stringify(v)); } catch(e){} },
+  del(k){ try { localStorage.removeItem(k); sessionStorage.removeItem(k); } catch(e){} }
+};
+let tToast;
+function toast(m){ const t = $('#toast'); t.textContent = m; t.classList.remove('oculto'); clearTimeout(tToast); tToast = setTimeout(() => t.classList.add('oculto'), 3800); }
+function saludoHora(){
+  let h = new Date().getHours();
+  try { h = Number(new Intl.DateTimeFormat('es-GT', { hour:'numeric', hour12:false, timeZone:'America/Guatemala' }).format(new Date())) % 24; } catch(e){}
+  return h < 12 ? 'Buenos días' : h < 19 ? 'Buenas tardes' : 'Buenas noches';
+}
+async function post(url, cuerpo, ms = 30000){
+  const ctrl = new AbortController(), t = setTimeout(() => ctrl.abort(), ms);
+  try {
+    const r = await fetch(url, { method:'POST', body: JSON.stringify(cuerpo), signal: ctrl.signal });
+    return await r.json();
+  } catch(e){ throw new Error('Sin conexión con la hoja de Google. Revise su internet.'); }
+  finally { clearTimeout(t); }
+}
+
+/* ============================ sesión ============================ */
+let SES = LS.get('mdeSesion') || LS.get('mdeSesion', true);
+const esAdmin = () => !!SES && (SES.rol === 'admin' || ADMINISTRADORES.includes(norm(SES.usuario)));
+
+/* Inicia sesión en cada app con el mismo usuario y contraseña, y deja la sesión
+   guardada donde cada app la busca al abrir. Si un usuario no existe en la hoja
+   de esa app, la app mostrará su propio ingreso. */
+const ENTRAR_MODULO = {
+  async calibracion(u, c, recordar){
+    const j = await post(MODULOS.calibracion.api, { action:'login', usuario:u, password:c });
+    if (!j.ok) throw new Error(j.error);
+    LS.set('cal_token', j.token); LS.set('cal_user', j.usuario.nombre);
+    LS.set('cal_c_sesion', { usuario:j.usuario, catalogos:j.catalogos });
+  },
+  async catalogo(u, c, recordar){
+    const j = await post(MODULOS.catalogo.api, { action:'login', usuario:u, clave:c });
+    if (!j.ok) throw new Error(j.error);
+    LS.del('cat_ses');
+    LS.set('cat_ses', { token:j.token, usuario:j.usuario, recordar }, !recordar);
+  }
+};
+
+function mostrarPublico(si){ $('#datosPublico').classList.toggle('oculto', !si); }
+$('#usuario').addEventListener('input', e => mostrarPublico(norm(e.target.value) === 'PUBLICO'));
+$('#formLogin').addEventListener('input', () => $('#loginError').textContent = '');
+
+$('#formLogin').addEventListener('submit', async ev => {
+  ev.preventDefault();
+  const b = $('#btnEntrar'), err = $('#loginError');
+  const usuario = $('#usuario').value.trim(), clave = $('#clave').value, recordar = $('#recordar').checked;
+  const publico = norm(usuario) === 'PUBLICO';
+  const v = id => $(id).value.trim();
+  const visitante = { nombre:v('#logNombre'), apellido:v('#logApellido'), correo:v('#logCorreo') };
+  if (publico){
+    mostrarPublico(true);
+    if (!visitante.nombre || !visitante.apellido){ err.textContent = 'Escriba su nombre y apellido.'; return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(visitante.correo)){ err.textContent = 'Escriba un correo válido.'; return; }
+  }
+  b.disabled = true; b.textContent = 'Ingresando…'; err.textContent = '';
+  try {
+    /* 1) Los usuarios viven en la hoja de VUELOS DRONES */
+    const dispositivo = /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent) ? 'Teléfono (MDE MT)' : 'Computadora (MDE MT)';
+    const j = await post(MODULOS.drones.api, { accion:'login', usuario, clave, recordar, ...(publico ? { ...visitante, dispositivo } : {}) });
+    if (!j.ok){
+      if (j.falta === 'correo') mostrarPublico(true);
+      throw new Error(String(j.error || 'Usuario o contraseña incorrectos.').replace(/^SESION:\s*/, ''));
+    }
+    const sesVuelos = { token:j.token, rol:j.rol, nombre:j.nombre, ...(publico ? { visitante } : {}) };
+    LS.del('vuelosSesion'); LS.set('vuelosSesion', sesVuelos, !recordar);
+
+    /* 2) Las otras dos apps, en paralelo */
+    b.textContent = 'Conectando módulos…';
+    const mods = { drones:true };
+    const res = await Promise.allSettled(Object.keys(ENTRAR_MODULO).map(k => ENTRAR_MODULO[k](usuario, clave, recordar).then(() => k)));
+    Object.keys(ENTRAR_MODULO).forEach((k, i) => mods[k] = res[i].status === 'fulfilled');
+
+    SES = { usuario: norm(usuario), nombre: j.nombre || usuario, rol: j.rol, mods, recordar };
+    LS.del('mdeSesion'); LS.set('mdeSesion', SES, !recordar);
+    $('#clave').value = '';
+    ['#logNombre','#logApellido','#logCorreo'].forEach(id => $(id).value = '');
+    entrarPortada();
+  } catch(e){ err.textContent = e.message; }
+  b.disabled = false; b.textContent = 'Ingresar';
+});
+
+function cerrarSesion(){
+  const ses = LS.get('cat_ses') || LS.get('cat_ses', true);
+  if (ses && ses.token) post(MODULOS.catalogo.api, { action:'logout', token:ses.token }).catch(() => {});
+  const ct = (() => { try { return localStorage.getItem('cal_token'); } catch(e){ return null; } })();
+  if (ct) post(MODULOS.calibracion.api, { action:'logout', token:ct }).catch(() => {});
+  ['mdeSesion','vuelosSesion','cal_token','cal_c_sesion','cat_ses','cat_datos'].forEach(LS.del);
+  SES = null;
+  $('#marcos').querySelectorAll('iframe').forEach(f => f.remove());
+  history.replaceState(null, '', location.pathname);
+  mostrar('login');
+}
+$('#btnSalir').onclick = () => { if (confirm('¿Cerrar sesión en MDE MT y en los tres módulos?')) cerrarSesion(); };
+
+/* ============================ navegación ============================ */
+function mostrar(id){
+  ['login','portada','reportes','modulo'].forEach(s => $('#' + s).classList.toggle('oculto', s !== id));
+  if (id !== 'modulo') window.scrollTo(0, 0);
+}
+function entrarPortada(){
+  const nom = String(SES.nombre || SES.usuario);
+  $('#saludo').textContent = `${saludoHora()}, ${nom.split(' ')[0]}`;
+  $('#quien').textContent = nom;
+  $('#rolTxt').textContent = esAdmin() ? 'Administrador' : 'Usuario';
+  $('#iniciales').textContent = nom.split(/\s+/).map(x => x[0]).join('').slice(0, 2).toUpperCase();
+  $('#tileReportes').classList.toggle('oculto', !esAdmin());
+  $('#mosaico').classList.toggle('tres', !esAdmin());
+  $$('[data-estado]').forEach(e => {
+    const ok = SES.mods ? SES.mods[e.dataset.estado] !== false : true;
+    e.textContent = ok ? '● conectado' : 'pedirá ingreso';
+    e.classList.toggle('ok', ok);
+  });
+  router();
+}
+function ir(dest){ if (location.hash !== '#' + dest) location.hash = dest; else router(); }
+function router(){
+  if (!SES) return mostrar('login');
+  const d = location.hash.replace('#', '') || 'inicio';
+  if (MODULOS[d]) return abrirModulo(d);
+  if (d === 'reportes' && esAdmin()){ pintarReportes(); return mostrar('reportes'); }
+  mostrar('portada');
+}
+window.addEventListener('hashchange', router);
+document.addEventListener('click', ev => {
+  const a = ev.target.closest('[data-abrir]'); if (a){ ir(a.dataset.abrir); return; }
+  const i = ev.target.closest('[data-ir]');   if (i){ ir(i.dataset.ir); return; }
+});
+
+/* ============================ módulos ============================ */
+const marcos = {};
+function abrirModulo(k, alListo){
+  const m = MODULOS[k];
+  $('#tituloModulo').innerHTML = m.titulo;
+  mostrar('modulo');
+  Object.entries(marcos).forEach(([n, f]) => f.style.visibility = n === k ? 'visible' : 'hidden');
+  if (!marcos[k]){
+    $('#cargando').classList.remove('oculto');
+    const f = document.createElement('iframe');
+    f.src = m.url;
+    f.title = m.nombre;
+    f.allow = 'camera; geolocation; fullscreen; clipboard-write';
+    f.addEventListener('load', () => { $('#cargando').classList.add('oculto'); vigilarReportes(k, f); });
+    $('#marcos').appendChild(f);
+    marcos[k] = f;
+  } else $('#cargando').classList.add('oculto');
+  if (alListo) esperarListo(marcos[k]).then(alListo);
+}
+/* La app está lista cuando su pantalla principal (#app) ya no está oculta */
+function esperarListo(f, ms = 25000){
+  return new Promise(ok => {
+    const ini = Date.now();
+    (function mira(){
+      let d = null; try { d = f.contentDocument; } catch(e){}
+      const app = d && d.getElementById('app');
+      if (app && app.offsetParent !== null && !/oculto|hidden/.test(app.className)) return setTimeout(() => ok(d), 900);
+      if (Date.now() - ini > ms) return ok(null);
+      setTimeout(mira, 300);
+    })();
+  });
+}
+
+/* ============================ reportes ============================ */
+const HIST = 'mde_reportes';
+const leerHist = () => LS.get(HIST) || [];
+function anotarReporte(k){
+  const h = leerHist();
+  h.unshift({ mod:k, fecha:new Date().toISOString(), usuario: SES ? SES.nombre : '' });
+  LS.set(HIST, h.slice(0, 300));
+}
+/* Anota en el historial cada vez que se genera un reporte dentro de un módulo */
+function vigilarReportes(k, f){
+  try {
+    const d = f.contentDocument; if (!d || d.__mdeVigila) return;
+    d.__mdeVigila = true;
+    d.addEventListener('click', ev => { if (ev.target.closest(MODULOS[k].generaReporte)) anotarReporte(k); }, true);
+  } catch(e){}
+}
+function generarReporte(k){
+  history.pushState(null, '', '#' + k);
+  abrirModulo(k, d => {
+    const b = d && [...d.querySelectorAll(MODULOS[k].abrirReporte)].find(x => x.offsetParent !== null);
+    if (b) b.click();
+    else toast('Abra el reporte desde el menú del módulo (el módulo pidió ingreso o aún está cargando).');
+  });
+}
+let filtroRep = '';
+function pintarReportes(){
+  const h = leerHist();
+  $('#filtrosRep').innerHTML = [['', 'Todos'], ...Object.entries(MODULOS).map(([k, m]) => [k, m.nombre])]
+    .map(([k, n]) => `<button type="button" data-frep="${k}" class="${filtroRep === k ? 'activo' : ''}">${esc(n)} <small>(${k ? h.filter(x => x.mod === k).length : h.length})</small></button>`).join('');
+  const fmt = new Intl.DateTimeFormat('es-GT', { dateStyle:'medium', timeStyle:'short', timeZone:'America/Guatemala' });
+  $('#gruposRep').innerHTML = Object.entries(MODULOS).filter(([k]) => !filtroRep || filtroRep === k).map(([k, m]) => {
+    const lista = h.filter(x => x.mod === k);
+    const filas = lista.slice(0, 50).map((x, i) => `<tr><td>${lista.length - i}</td><td>${esc(fmt.format(new Date(x.fecha)))}</td><td>${esc(x.usuario)}</td></tr>`).join('');
+    return `<section class="grupo">
+      <header>${ICONOS[k]}<div><h2>${esc(m.nombre.toUpperCase())}</h2><p>${esc(m.descRep)}</p></div>
+        <div class="cuenta">${lista.length}<small>generados</small></div>
+        <button class="btn prim" type="button" data-genrep="${k}">Generar reporte</button></header>
+      ${lista.length ? `<table><thead><tr><th>#</th><th>Fecha</th><th>Generado por</th></tr></thead><tbody>${filas}</tbody></table>` : `<p class="vacio">Aún no hay reportes generados en este grupo.</p>`}
+    </section>`;
+  }).join('');
+}
+$('#reportes').addEventListener('click', ev => {
+  const f = ev.target.closest('[data-frep]'); if (f){ filtroRep = f.dataset.frep; pintarReportes(); return; }
+  const g = ev.target.closest('[data-genrep]'); if (g){ generarReporte(g.dataset.genrep); return; }
+});
+$('#btnBorrarHist').onclick = () => { if (confirm('¿Borrar el historial de reportes de este dispositivo?')){ LS.del(HIST); pintarReportes(); } };
+
+/* ============================ inicio ============================ */
+if (SES) entrarPortada(); else mostrar('login');
+</script>
+</body>
+</html>
