@@ -108,6 +108,8 @@ input:focus{border-color:var(--verde)}
 .t-report{--img:url("fondos/reportes.jpg");--falla:radial-gradient(circle at 70% 25%,#1f5a63 0,#0b1f24 55%,#050d10 100%)}
 
 .pie{margin:30px 0 20px;padding-top:16px;border-top:1px solid var(--linea);display:flex;align-items:center;justify-content:center;gap:10px;color:var(--suave);font-size:13px;text-align:center}
+.descarga-app{text-align:center;margin:-8px 0 18px}
+.descarga-app a{color:var(--verde);font-size:14px;text-decoration:none;border:1px solid rgba(45,226,166,.4);border-radius:999px;padding:7px 16px;display:inline-block}
 .pie .rayas{width:34px;height:10px;background:repeating-linear-gradient(115deg,var(--verde) 0 4px,transparent 4px 9px)}
 
 /* ---------- MÓDULO (app dentro de la portada) ---------- */
@@ -240,6 +242,7 @@ input:focus{border-color:var(--verde)}
     </div>
 
     <div class="pie"><span class="rayas"></span><span>Departamento de Malezas y Madurantes · Ingenio Madre Tierra</span></div>
+    <p class="descarga-app oculto" id="descargaApp"><a href="descargas/mde-mt.apk" download>📱 Descargar app Android (APK)</a></p>
   </div>
 </section>
 
@@ -561,6 +564,8 @@ $('#btnBorrarHist').classList.toggle('oculto', HAY_CENTRAL);
 $('#btnBorrarHist').onclick = () => { if (confirm('¿Borrar el historial de reportes de este dispositivo?')){ LS.del(HIST); pintarReportes(); } };
 
 /* ============================ inicio ============================ */
+const EN_APP = !!window.AppAndroid || /MDEMTApp/.test(navigator.userAgent);
+if (!EN_APP && /Android/i.test(navigator.userAgent)) $('#descargaApp').classList.remove('oculto');
 if (SES) entrarPortada(); else mostrar('login');
 </script>
 </body>
