@@ -4,266 +4,247 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>MDE MT · Malezas y Madurantes</title>
-<meta name="theme-color" content="#04080a">
+<meta name="theme-color" content="#2e7d32">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=League+Spartan:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* =====================================================================
-   MDE MT · Malezas, Drones y Equipos — Ingenio Madre Tierra
-   Las imágenes de fondo se cambian en la carpeta fondos/ (ver README)
+   MDE MT · Malezas y Madurantes — mismo diseño que Calibración de boquillas
+   Las imágenes de los botones se cambian en la carpeta fondos/ (ver README)
    ===================================================================== */
 :root{
-  --fondo:#04080a; --panel:#0a1315; --panel2:#0e1a1c; --linea:#1d3a35;
-  --verde:#2de2a6; --verde2:#1fb985; --texto:#e8f4f1; --suave:#93aca6; --alerta:#ff6b7d;
-  --radio:16px;
+  --ink:#18201a; --ink-2:#2f3b33; --ink-3:#56635a;
+  --paper:#f3f6f2; --card:#ffffff; --line:#e3ebe1; --field:#eef2e8;
+  --text:#18201a; --muted:#56635a;
+  --accent:#2e7d32; --accent-dk:#1f6b25; --accent-ink:#ffffff; --accent-soft:#dff1d9;
+  --bad:#a93224; --bad-soft:#fde4de;
+  --radius:26px;
+  --shadow:0 6px 18px rgba(46,125,50,.08);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
-body{background:var(--fondo);color:var(--texto);font:15px/1.45 "Barlow",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+html,body{min-height:100%}
+body{background:var(--paper);color:var(--text);font:15px/1.45 'Nunito',system-ui,sans-serif;font-weight:600;-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+h1,h2,h3{font-weight:900}
 .oculto{display:none!important}
-h1,h2,h3,.cond{font-family:"League Spartan","Barlow",sans-serif;font-weight:800;letter-spacing:0}
+.envoltura{width:min(1080px,100%);margin:0 auto;padding:0 16px}
 
-/* ---------- fondo general (imagen opcional fondos/portada.jpg) ---------- */
-.escena{min-height:100vh;min-height:100dvh;
-  background:
-    linear-gradient(180deg,rgba(4,8,10,.55) 0,rgba(4,8,10,.85) 38%,var(--fondo) 70%),
-    url("fondos/portada.jpg") center top/cover no-repeat,
-    radial-gradient(900px 500px at 50% -10%,#0d3a30 0,transparent 70%),
-    var(--fondo);}
+/* ---------- banda verde (como Calibración) ---------- */
+.banda{background:var(--accent);color:#fff;border-radius:0 0 var(--radius) var(--radius);padding-top:env(safe-area-inset-top)}
+.pildora{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.16);color:#fff;font-weight:800;font-size:14px;text-decoration:none;white-space:nowrap}
+.pildora:hover{background:rgba(255,255,255,.26)}
+.pildora.blanca{background:#fff;color:var(--accent-dk)}
+.pildora svg{width:17px;height:17px}
 
 /* ---------- LOGIN ---------- */
-#login{display:grid;place-items:center;padding:28px 16px}
-.login-caja{width:min(400px,100%);background:rgba(10,19,21,.92);border:1px solid var(--linea);border-radius:22px;overflow:hidden;
-  box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(45,226,166,.06);backdrop-filter:blur(6px)}
-.login-caja header{text-align:center;padding:26px 24px 18px;border-bottom:1px solid var(--linea)}
-.login-caja header img{height:104px;display:block;margin:0 auto 12px;filter:drop-shadow(0 6px 22px rgba(45,226,166,.3))}
-.login-caja h1{font-size:30px;line-height:1.05;color:#fff}
-.login-caja h1 span{color:var(--verde)}
-.login-caja header p{color:var(--suave);font-size:14px;margin-top:4px;text-transform:uppercase;letter-spacing:.12em}
-.login-caja form{padding:22px 24px 24px;display:grid;gap:14px}
-label{display:block;font-weight:600;font-size:14px;margin-bottom:5px}
-input[type=text],input[type=password],input[type=email]{width:100%;min-height:46px;padding:10px 13px;border-radius:12px;border:1px solid var(--linea);
-  background:rgba(4,10,12,.7);color:var(--texto);font:inherit;outline:none;transition:border-color .15s}
-input:focus{border-color:var(--verde)}
-.recordar{display:flex;gap:8px;align-items:center;font-weight:400;margin:0;color:var(--suave)}
-.recordar input{accent-color:var(--verde);width:18px;height:18px}
-.btn{min-height:46px;border-radius:12px;padding:10px 18px;font-weight:600;background:var(--panel2);border:1px solid var(--linea)}
-.btn.prim{background:linear-gradient(180deg,var(--verde),var(--verde2));color:#03140f;border:0;font-size:16px}
+#login{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+#login .banda{text-align:center;padding:44px 16px 90px}
+#login .banda img{height:142px;display:block;margin:0 auto 16px}
+#login h1{font-size:28px;line-height:1.15}
+#login .banda p{opacity:.9;font-weight:600;font-size:14px;margin-top:6px}
+.sigla{display:inline-block;font-weight:900;font-size:12px;letter-spacing:.2em;border-radius:999px;padding:3px 10px 3px 12px;background:rgba(255,255,255,.18);color:#fff;vertical-align:middle}
+.caja{width:min(360px,calc(100% - 32px));margin:-56px auto 0;background:var(--card);border-radius:var(--radius);padding:22px 20px 20px;box-shadow:0 14px 40px rgba(24,32,26,.14);display:grid;gap:12px}
+label{display:block;font-weight:800;font-size:13px;color:var(--ink-2);margin-bottom:6px}
+input[type=text],input[type=password],input[type=email]{width:100%;min-height:52px;padding:12px 18px;border-radius:18px;border:2px solid transparent;background:var(--field);color:var(--text);font:inherit;font-weight:700;outline:none;transition:border-color .15s}
+input:focus{border-color:var(--accent)}
+.recordar{display:flex;gap:8px;align-items:center;font-weight:700;margin:0;color:var(--muted)}
+.recordar input{accent-color:var(--accent);width:18px;height:18px}
+.btn{min-height:52px;border-radius:18px;padding:10px 20px;font-weight:900;font-size:16px;background:var(--field);color:var(--accent-dk)}
+.btn.prim{background:var(--accent);color:#fff}
+.btn.prim:hover{background:var(--accent-dk)}
 .btn:disabled{opacity:.6;cursor:default}
-.error{color:var(--alerta);font-size:14px;min-height:1.2em}
-.nota{color:var(--suave);font-size:13px}
-#datosPublico{display:grid;gap:12px;padding:12px;border:1px dashed var(--linea);border-radius:12px}
+.error{color:var(--bad);font-size:14px;min-height:1.2em}
+.nota{color:var(--muted);font-size:13px;font-weight:600}
+#datosPublico{display:grid;gap:10px;padding:12px;border-radius:18px;background:var(--accent-soft)}
+.pie-login{margin-top:auto;padding:28px 0 22px;text-align:center;color:var(--muted);font-size:12px;font-weight:700}
 
 /* ---------- PORTADA ---------- */
-#portada{display:flex;flex-direction:column;padding:0 16px}
-.marco{width:min(980px,100%);margin:0 auto;flex:1;display:flex;flex-direction:column}
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0}
-.marca{display:flex;align-items:center;gap:10px}
-.marca img{height:40px}
-.marca b{font:800 20px "League Spartan";letter-spacing:.12em}
-.marca b span{color:var(--verde)}
-.yo{display:flex;align-items:center;gap:10px;background:rgba(10,19,21,.75);border:1px solid var(--linea);border-radius:999px;padding:5px 6px 5px 6px;backdrop-filter:blur(6px)}
-.yo .ini{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,var(--verde),var(--verde2));color:#03140f;font-weight:700;font-size:14px}
-.yo .txt{font-size:13px;line-height:1.15;padding-right:4px}
-.yo .txt small{display:block;color:var(--suave);font-size:11px}
-.chip-salir{font-size:13px;padding:6px 12px;border:1px solid var(--linea);border-radius:999px;background:rgba(10,19,21,.7)}
-.chip-salir:hover{border-color:var(--verde);color:var(--verde)}
-.heroe{text-align:center;padding:26px 0 30px}
-.heroe .logo{height:130px;display:block;margin:0 auto 18px;filter:drop-shadow(0 8px 30px rgba(45,226,166,.25))}
-.heroe .saludo{color:var(--verde);font-weight:600;letter-spacing:.06em;font-size:15px}
-.heroe h1{font-size:clamp(30px,6.4vw,56px);line-height:1;color:#fff;margin-top:6px;text-shadow:0 2px 24px rgba(0,0,0,.6)}
-.heroe h1 span{color:var(--verde)}
-.heroe .linea{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:14px;color:#cfe0dc;font-size:15px}
-.heroe .linea::before,.heroe .linea::after{content:"";height:1px;width:min(80px,12vw);background:linear-gradient(90deg,transparent,var(--verde))}
-.heroe .linea::after{transform:scaleX(-1)}
-.sigla{display:inline-block;font:700 13px "League Spartan";letter-spacing:.3em;color:var(--verde);border:1px solid rgba(45,226,166,.45);border-radius:999px;padding:3px 12px 3px 15px}
-.mosaico{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-.tile{position:relative;min-height:190px;border-radius:var(--radio);overflow:hidden;text-align:left;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;
-  border:1px solid rgba(45,226,166,.45);box-shadow:0 0 0 1px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.45),inset 0 0 30px rgba(45,226,166,.08);
-  background:
-    linear-gradient(180deg,rgba(4,8,10,.05) 20%,rgba(4,8,10,.88) 100%),
-    var(--img) center/cover no-repeat,
-    var(--falla);
-  transition:transform .18s,box-shadow .18s,border-color .18s}
-.tile:hover,.tile:focus-visible{transform:translateY(-3px);border-color:var(--verde);box-shadow:0 0 0 1px var(--verde),0 14px 36px rgba(0,0,0,.5),0 0 28px rgba(45,226,166,.25);outline:none}
-.tile svg{width:46px;height:46px;stroke:#fff;margin-bottom:8px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6))}
-.tile h2{font-size:clamp(18px,3vw,24px);line-height:1.1;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.7)}
-.tile small{color:#cfe2dd;font-size:13px;margin-top:4px}
-.tile::after{content:"";display:block;width:42px;height:4px;border-radius:4px;background:var(--verde);margin-top:12px;transition:width .2s}
-.tile:hover::after,.tile:focus-visible::after{width:90px}
-.tile .ir{position:absolute;right:16px;bottom:16px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(45,226,166,.5);background:rgba(4,8,10,.6);transition:.2s}
-.tile .ir svg{width:18px;height:18px;margin:0;stroke:var(--verde);filter:none}
-.tile:hover .ir{background:var(--verde)}
-.tile:hover .ir svg{stroke:#03140f}
-.tile .estado{position:absolute;top:12px;right:12px;font-size:11px;padding:3px 9px;border-radius:999px;background:rgba(4,8,10,.75);border:1px solid var(--linea);color:var(--suave)}
-.tile .estado.ok{color:var(--verde);border-color:rgba(45,226,166,.5)}
-.t-drones{--img:url("fondos/dashboard-drones.jpg");--falla:radial-gradient(circle at 70% 25%,#2a6a55 0,#0b2420 55%,#06110f 100%)}
-.t-calib {--img:url("fondos/calibracion-boquillas.jpg");--falla:radial-gradient(circle at 70% 25%,#2d5566 0,#0c1d25 55%,#060d11 100%)}
-.t-catal {--img:url("fondos/catalogo-equipos.jpg");--falla:radial-gradient(circle at 70% 25%,#4d6a2a 0,#17240c 55%,#0a1106 100%)}
-.t-report{--img:url("fondos/reportes.jpg");--falla:radial-gradient(circle at 70% 25%,#1f5a63 0,#0b1f24 55%,#050d10 100%)}
+.cab{display:flex;align-items:center;gap:12px;padding:18px 0 12px}
+.cab img{height:38px}
+.cab .hola{flex:1;min-width:0;line-height:1.2}
+.cab .hola b{display:block;font-size:19px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cab .hola small{font-size:12px;font-weight:700;letter-spacing:.04em;opacity:.85;text-transform:uppercase}
+.cab .acciones{display:flex;gap:8px}
+.titulo-app{padding:6px 0 26px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.titulo-app h1{font-size:clamp(26px,5vw,38px);line-height:1.05}
+.titulo-app p{width:100%;opacity:.88;font-size:14px}
 
-.pie{margin:30px 0 20px;padding-top:16px;border-top:1px solid var(--linea);display:flex;align-items:center;justify-content:center;gap:10px;color:var(--suave);font-size:13px;text-align:center}
-.descarga-app{text-align:center;margin:-8px 0 18px}
-.descarga-app a{color:var(--verde);font-size:14px;text-decoration:none;border:1px solid rgba(45,226,166,.4);border-radius:999px;padding:7px 16px;display:inline-block}
-.pie .rayas{width:34px;height:10px;background:repeating-linear-gradient(115deg,var(--verde) 0 4px,transparent 4px 9px)}
+.seccion{display:flex;align-items:baseline;gap:10px;margin:24px 0 14px}
+.seccion h2{font-size:20px}
+.mosaico{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.tile{position:relative;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;text-align:left;display:flex;flex-direction:column;border:2px solid transparent;transition:transform .15s,border-color .15s,box-shadow .15s}
+.tile:hover,.tile:focus-visible{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 12px 26px rgba(46,125,50,.16);outline:none}
+.tile .foto{height:128px;background:var(--img) center/cover no-repeat,var(--falla);position:relative}
+.tile .foto .icono{position:absolute;left:18px;bottom:-26px;width:56px;height:56px;border-radius:18px;background:var(--card);display:grid;place-items:center;box-shadow:var(--shadow)}
+.tile .foto .icono svg{width:32px;height:32px;stroke:var(--accent)}
+.tile .cuerpo{padding:36px 18px 18px;display:flex;flex-direction:column;gap:4px;flex:1}
+.tile h3{font-size:19px;line-height:1.2}
+.tile small{color:var(--muted);font-size:13px;font-weight:600}
+.tile .fila{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+.tile .estado{font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--field);color:var(--muted)}
+.tile .estado.ok{background:var(--accent-soft);color:var(--accent-dk)}
+.tile .estado.ok::before{content:"● "}
+.tile .ir{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--field);transition:.15s;margin-left:auto}
+.tile .ir svg{width:18px;height:18px;stroke:var(--accent-dk)}
+.tile:hover .ir{background:var(--accent)}
+.tile:hover .ir svg{stroke:#fff}
+.t-drones{--img:url("fondos/dashboard-drones.jpg");--falla:linear-gradient(135deg,#cfe8c8,#9fd09a)}
+.t-calib {--img:url("fondos/calibracion-boquillas.jpg");--falla:linear-gradient(135deg,#d8ecd2,#acd8a4)}
+.t-catal {--img:url("fondos/catalogo-equipos.jpg");--falla:linear-gradient(135deg,#e3efd6,#bcd99c)}
+.t-report{--img:url("fondos/reportes.jpg");--falla:linear-gradient(135deg,#d3ebe3,#9ccfbc)}
+
+.pie{margin:30px 0 22px;text-align:center;color:var(--muted);font-size:12px;font-weight:700}
+.descarga-app{text-align:center;margin:-8px 0 22px}
+.descarga-app a{display:inline-flex;align-items:center;gap:8px;background:var(--accent-soft);color:var(--accent-dk);font-weight:900;font-size:15px;text-decoration:none;border-radius:999px;padding:11px 22px}
 
 /* ---------- MÓDULO (app dentro de la portada) ---------- */
-#modulo{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--fondo);z-index:20}
-.barra{display:flex;align-items:center;gap:10px;padding:8px 12px;padding-top:max(8px,env(safe-area-inset-top));background:#060c0e;border-bottom:1px solid var(--linea);min-height:52px}
-.barra .volver{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:10px;border:1px solid var(--linea);font-weight:600;font-size:14px}
-.barra .volver:hover{border-color:var(--verde);color:var(--verde)}
-.barra .volver svg{width:18px;height:18px}
-.barra h2{font-size:20px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.barra h2 span{color:var(--verde)}
-.barra .sigla{font:700 12px "League Spartan";letter-spacing:.25em;color:var(--suave)}
+#modulo{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--paper);z-index:20}
+.barra{display:flex;align-items:center;gap:10px;padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top));background:var(--accent);color:#fff;min-height:58px}
+.barra h2{font-size:18px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.barra .sigla{font-size:11px}
 .marcos{flex:1;position:relative}
-.marcos iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
-.cargando{position:absolute;inset:0;display:grid;place-items:center;color:var(--suave);background:var(--fondo);z-index:2}
-.giro{width:34px;height:34px;border-radius:50%;border:3px solid var(--linea);border-top-color:var(--verde);animation:g 0.8s linear infinite;margin:0 auto 10px}
+.marcos iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--paper)}
+.cargando{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);background:var(--paper);z-index:2;font-weight:800;text-align:center}
+.giro{width:36px;height:36px;border-radius:50%;border:4px solid var(--accent-soft);border-top-color:var(--accent);animation:g .8s linear infinite;margin:0 auto 10px}
 @keyframes g{to{transform:rotate(360deg)}}
 
 /* ---------- REPORTES ---------- */
-#reportes{padding:0 16px 30px}
-.rep-cab{display:flex;align-items:center;gap:12px;padding:20px 0 6px;flex-wrap:wrap}
-.rep-cab h1{font-size:34px;flex:1}
-.rep-cab h1 span{color:var(--verde)}
-.filtros{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}
-.filtros button{padding:7px 14px;border-radius:999px;border:1px solid var(--linea);background:rgba(10,19,21,.8);font-size:14px}
-.filtros button.activo{background:var(--verde);color:#03140f;border-color:var(--verde);font-weight:600}
-.grupo{background:rgba(10,19,21,.92);border:1px solid var(--linea);border-radius:var(--radio);margin-bottom:16px;overflow:hidden}
-.grupo header{display:flex;align-items:center;gap:14px;padding:16px 18px;border-bottom:1px solid var(--linea);flex-wrap:wrap}
-.grupo header svg{width:34px;height:34px;stroke:var(--verde);flex:none}
+#reportes .banda .cab{padding-bottom:22px}
+.filtros{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 16px}
+.filtros button{padding:9px 16px;border-radius:999px;background:var(--card);box-shadow:var(--shadow);font-weight:800;font-size:14px;color:var(--ink-2)}
+.filtros button small{color:var(--muted)}
+.filtros button.activo{background:var(--accent);color:#fff}
+.filtros button.activo small{color:#dff1d9}
+.grupo{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:16px;overflow:hidden}
+.grupo header{display:flex;align-items:center;gap:14px;padding:18px 20px;flex-wrap:wrap}
+.grupo header svg{width:46px;height:46px;padding:9px;border-radius:16px;background:var(--accent-soft);stroke:var(--accent);flex:none}
 .grupo header div{flex:1;min-width:180px}
-.grupo h2{font-size:22px;line-height:1.1}
-.grupo header p{color:var(--suave);font-size:13px}
-.grupo .cuenta{font:700 26px "League Spartan";color:var(--verde);text-align:right;line-height:1}
-.grupo .cuenta small{display:block;font:400 11px "Barlow";color:var(--suave);letter-spacing:.08em;text-transform:uppercase}
-.grupo table{width:100%;border-collapse:collapse;font-size:14px}
-.grupo th,.grupo td{padding:9px 18px;text-align:left;border-bottom:1px solid rgba(29,58,53,.6)}
-.grupo th{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--suave);font-weight:600}
-.grupo tr:last-child td{border-bottom:0}
-.grupo .vacio{padding:16px 18px;color:var(--suave);font-size:14px}
+.grupo h2{font-size:18px;line-height:1.2}
+.grupo header p{color:var(--muted);font-size:13px}
+.grupo .cuenta{font-weight:900;font-size:28px;color:var(--accent);text-align:right;line-height:1}
+.grupo .cuenta small{display:block;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.grupo .btn{min-height:46px;font-size:15px}
+.grupo table{width:calc(100% - 28px);margin:0 14px 14px;border-collapse:separate;border-spacing:0 6px;font-size:14px}
+.grupo th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800;text-align:left;padding:0 12px}
+.grupo td{background:var(--field);padding:10px 12px}
+.grupo td:first-child{border-radius:14px 0 0 14px}
+.grupo td:last-child{border-radius:0 14px 14px 0}
+.grupo .vacio{margin:0 14px 16px;padding:14px;border-radius:16px;background:var(--field);color:var(--muted);font-size:14px}
+.borrar{text-align:right;margin-bottom:24px}
+.borrar button{color:var(--muted);font-weight:800;font-size:13px;text-decoration:underline}
 
-.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#0f1f1c;border:1px solid var(--verde);color:var(--texto);padding:10px 16px;border-radius:12px;z-index:50;max-width:92vw;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:16px;z-index:50;max-width:92vw;box-shadow:0 10px 30px rgba(0,0,0,.25);font-weight:700}
 
 @media (max-width:640px){
-  .marca b{display:none}
-  .yo .txt{display:none}
-  .heroe{padding:12px 0 22px}
-  .heroe .logo{height:92px}
-  .tile .ir{display:none}
-  .mosaico{gap:12px}
-  .tile{min-height:150px;padding:14px}
-  .tile svg{width:36px;height:36px}
+  #login .banda img{height:112px}
+  .cab .hola b{font-size:17px}
+  .mosaico{grid-template-columns:1fr}
+  .tile .foto{height:86px}
   .barra .sigla{display:none}
   .grupo th:nth-child(3),.grupo td:nth-child(3){display:none}
+  .grupo td:nth-child(2){border-radius:0 14px 14px 0}
 }
 </style>
 </head>
 <body>
 
 <!-- ============================ LOGIN ============================ -->
-<section id="login" class="escena">
-  <div class="login-caja">
-    <header>
-      <img src="logo.png" alt="Ingenio Madre Tierra">
-      <h1>MALEZAS Y <span>MADURANTES</span></h1>
-      <p style="margin-top:10px"><span class="sigla">MDE MT</span></p>
-    </header>
-    <form id="formLogin" autocomplete="on">
-      <div><label for="usuario">Usuario</label><input type="text" id="usuario" autocomplete="username" autocapitalize="characters" required></div>
-      <div><label for="clave">Contraseña</label><input type="password" id="clave" autocomplete="current-password" required></div>
-      <div id="datosPublico" class="oculto">
-        <p class="nota">Usuario público: escriba sus datos para registrar su ingreso.</p>
-        <div><label for="logNombre">Nombre</label><input type="text" id="logNombre" autocomplete="given-name"></div>
-        <div><label for="logApellido">Apellido</label><input type="text" id="logApellido" autocomplete="family-name"></div>
-        <div><label for="logCorreo">Correo</label><input type="email" id="logCorreo" autocomplete="email"></div>
-      </div>
-      <label class="recordar"><input type="checkbox" id="recordar" checked> Mantener la sesión en este dispositivo</label>
-      <button class="btn prim" id="btnEntrar" type="submit">Ingresar</button>
-      <p class="error" id="loginError" role="alert"></p>
-    </form>
+<section id="login">
+  <div class="banda">
+    <img src="logo.png" alt="Ingenio Madre Tierra">
+    <h1>Malezas y Madurantes</h1>
+    <p>Drones y equipos · <span class="sigla">MDE MT</span></p>
   </div>
+  <form class="caja" id="formLogin" autocomplete="on">
+    <div><label for="usuario">Usuario</label><input type="text" id="usuario" autocomplete="username" autocapitalize="characters" required></div>
+    <div><label for="clave">Contraseña</label><input type="password" id="clave" autocomplete="current-password" required></div>
+    <div id="datosPublico" class="oculto">
+      <p class="nota">Usuario público: escriba sus datos para registrar su ingreso.</p>
+      <div><label for="logNombre">Nombre</label><input type="text" id="logNombre" autocomplete="given-name"></div>
+      <div><label for="logApellido">Apellido</label><input type="text" id="logApellido" autocomplete="family-name"></div>
+      <div><label for="logCorreo">Correo</label><input type="email" id="logCorreo" autocomplete="email"></div>
+    </div>
+    <label class="recordar"><input type="checkbox" id="recordar" checked> Mantener la sesión en este dispositivo</label>
+    <button class="btn prim" id="btnEntrar" type="submit">Ingresar</button>
+    <p class="error" id="loginError" role="alert"></p>
+  </form>
+  <p class="pie-login">Departamento de Malezas y Madurantes · Ingenio Madre Tierra</p>
 </section>
 
 <!-- ============================ PORTADA ============================ -->
-<section id="portada" class="escena oculto">
-  <div class="marco">
-    <div class="top">
-      <div class="marca"><img src="logo.png" alt=""><b>MDE <span>MT</span></b></div>
-      <div class="yo">
-        <span class="ini" id="iniciales">MT</span>
-        <span class="txt"><b id="quien"></b><small id="rolTxt"></small></span>
-        <button class="chip-salir" id="btnSalir" type="button">Salir</button>
+<section id="portada" class="oculto">
+  <div class="banda">
+    <div class="envoltura">
+      <div class="cab">
+        <img src="logo.png" alt="Ingenio Madre Tierra">
+        <div class="hola"><b id="saludo">Bienvenido</b><small id="rolTxt"></small></div>
+        <div class="acciones"><button class="pildora" id="btnSalir" type="button">Salir</button></div>
+      </div>
+      <div class="titulo-app">
+        <h1>Malezas y Madurantes</h1><span class="sigla">MDE MT</span>
+        <p>Drones y equipos · <span id="quien"></span></p>
       </div>
     </div>
+  </div>
+  <span id="iniciales" class="oculto"></span>
 
-    <div class="heroe">
-      <img class="logo" src="logo.png" alt="Ingenio Madre Tierra">
-      <div class="saludo" id="saludo">Bienvenido</div>
-      <h1>MALEZAS Y <span>MADURANTES</span></h1>
-      <div class="linea"><span>Drones y equipos</span><span class="sigla">MDE MT</span></div>
-      <p class="nota" style="margin-top:10px">Seleccione el módulo que desea utilizar</p>
-    </div>
-
+  <div class="envoltura">
+    <div class="seccion"><h2>Módulos</h2><span class="nota">Seleccione el que desea utilizar</span></div>
     <div class="mosaico" id="mosaico">
       <button class="tile t-drones" data-abrir="drones" type="button">
-        <span class="estado" data-estado="drones"></span>
-        <svg viewBox="0 0 48 48" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h12M32 12h12M10 12v4M38 12v4"/><path d="M10 16h28"/><rect x="18" y="16" width="12" height="9" rx="2"/><path d="M20 25l-3 7M28 25l3 7M24 25v4"/><path d="M17 38l-1 4M24 34v6M31 38l1 4" opacity=".7"/></svg>
-        <h2>DASHBOARD<br>DRONES</h2>
-        <small>Vuelos DJI · variación real vs L/ha</small>
-        <span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <div class="foto"><span class="icono"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h12M32 12h12M10 12v4M38 12v4"/><path d="M10 16h28"/><rect x="18" y="16" width="12" height="9" rx="2"/><path d="M20 25l-3 7M28 25l3 7M24 25v4"/><path d="M17 38l-1 4M24 34v6M31 38l1 4" opacity=".7"/></svg></span></div>
+        <div class="cuerpo"><h3>Dashboard Drones</h3><small>Vuelos DJI · variación real vs L/ha</small>
+          <div class="fila"><span class="estado" data-estado="drones"></span><span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div>
       </button>
       <button class="tile t-calib" data-abrir="calibracion" type="button">
-        <span class="estado" data-estado="calibracion"></span>
-        <svg viewBox="0 0 48 48" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8h32"/><path d="M24 8v8"/><rect x="18" y="16" width="12" height="7" rx="1.5"/><path d="M21 23l-1 4h8l-1-4"/><path d="M24 30l-10 12M24 30l-4 13M24 30v13M24 30l4 13M24 30l10 12" opacity=".8"/></svg>
-        <h2>CALIBRACIÓN DE<br>BOQUILLAS DRONE</h2>
-        <small>Registro y análisis por dron</small>
-        <span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <div class="foto"><span class="icono"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8h32"/><path d="M24 8v8"/><rect x="18" y="16" width="12" height="7" rx="1.5"/><path d="M21 23l-1 4h8l-1-4"/><path d="M24 30l-10 12M24 30l-4 13M24 30v13M24 30l4 13M24 30l10 12" opacity=".8"/></svg></span></div>
+        <div class="cuerpo"><h3>Calibración de boquillas drone</h3><small>Registro y análisis por dron</small>
+          <div class="fila"><span class="estado" data-estado="calibracion"></span><span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div>
       </button>
       <button class="tile t-catal" data-abrir="catalogo" type="button">
-        <span class="estado" data-estado="catalogo"></span>
-        <svg viewBox="0 0 48 48" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 30V20h14l4 8h12a4 4 0 0 1 4 4v2"/><path d="M14 20v-8h8l3 8"/><circle cx="14" cy="34" r="7"/><circle cx="14" cy="34" r="2"/><circle cx="36" cy="37" r="4"/><path d="M21 36h11"/></svg>
-        <h2>CATÁLOGO<br>DE EQUIPO</h2>
-        <small>Taller, campo y ubicación de equipos</small>
-        <span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <div class="foto"><span class="icono"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 30V20h14l4 8h12a4 4 0 0 1 4 4v2"/><path d="M14 20v-8h8l3 8"/><circle cx="14" cy="34" r="7"/><circle cx="14" cy="34" r="2"/><circle cx="36" cy="37" r="4"/><path d="M21 36h11"/></svg></span></div>
+        <div class="cuerpo"><h3>Catálogo de equipo</h3><small>Taller, campo y ubicación de equipos</small>
+          <div class="fila"><span class="estado" data-estado="catalogo"></span><span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div>
       </button>
       <button class="tile t-report" data-abrir="reportes" id="tileReportes" type="button">
-        <svg viewBox="0 0 48 48" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M28 5H11v38h26V14z"/><path d="M28 5v9h9"/><path d="M17 36v-6M23 36V24M29 36v-9"/></svg>
-        <h2>REPORTES</h2>
-        <small>Generados por grupo · solo administrador</small>
-        <span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <div class="foto"><span class="icono"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M28 5H11v38h26V14z"/><path d="M28 5v9h9"/><path d="M17 36v-6M23 36V24M29 36v-9"/></svg></span></div>
+        <div class="cuerpo"><h3>Reportes</h3><small>Generados por grupo · solo administrador</small>
+          <div class="fila"><span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div>
       </button>
     </div>
 
-    <div class="pie"><span class="rayas"></span><span>Departamento de Malezas y Madurantes · Ingenio Madre Tierra</span></div>
-    <p class="descarga-app oculto" id="descargaApp"><a href="descargas/mde-mt.apk" download>📱 Descargar app Android (APK)</a></p>
+    <p class="pie">Departamento de Malezas y Madurantes · Ingenio Madre Tierra</p>
+    <p class="descarga-app oculto" id="descargaApp"><a href="descargas/mde-mt.apk" download>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Instalar app Android</a></p>
   </div>
 </section>
 
 <!-- ============================ REPORTES ============================ -->
-<section id="reportes" class="escena oculto">
-  <div class="marco">
-    <div class="rep-cab">
-      <button class="chip-salir" type="button" data-ir="inicio">← Portada</button>
-      <h1>REPORTES <span>MDE MT</span></h1>
+<section id="reportes" class="oculto">
+  <div class="banda">
+    <div class="envoltura">
+      <div class="cab">
+        <button class="pildora blanca" type="button" data-ir="inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Portada</button>
+        <div class="hola"><b>Reportes</b><small>Generados por grupo</small></div>
+      </div>
     </div>
-    <p class="nota">Genere un reporte desde aquí y quedará anotado en su grupo (hoja REPORTES de USUARIOS MDE MT).</p>
+  </div>
+  <div class="envoltura">
     <div class="filtros" id="filtrosRep"></div>
     <div id="gruposRep"></div>
-    <p style="text-align:right"><button class="chip-salir" type="button" id="btnBorrarHist">Borrar historial</button></p>
+    <p class="nota" style="margin:4px 4px 14px">Cada reporte que genere queda anotado en su grupo, en la hoja REPORTES de USUARIOS MDE MT.</p>
+    <p class="borrar"><button type="button" id="btnBorrarHist">Borrar historial</button></p>
   </div>
 </section>
 
 <!-- ============================ MÓDULO ============================ -->
 <section id="modulo" class="oculto">
   <div class="barra">
-    <button class="volver" type="button" data-ir="inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Portada</button>
+    <button class="pildora blanca" type="button" data-ir="inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Portada</button>
     <h2 id="tituloModulo"></h2>
     <span class="sigla">MDE MT</span>
   </div>
@@ -290,7 +271,7 @@ const ADMINISTRADORES = ['COBO'];          // respaldo si la hoja central aún n
 
 const MODULOS = {
   drones: {
-    titulo: 'DASHBOARD <span>DRONES</span>', nombre: 'Dashboard Drones',
+    titulo: 'Dashboard Drones', nombre: 'Dashboard Drones',
     url: '../VUELOS-DRONES/',
     api: 'https://script.google.com/macros/s/AKfycbzxXuyjqShlBHQUKPWyXimzyjiTTOwwmcaSulh3EJcbYP-0iCNCSlOvb0IKtJyv8qs/exec',
     abrirReporte: '#btnReporte',            // botón que abre el reporte en la app
@@ -298,7 +279,7 @@ const MODULOS = {
     descRep: 'Reporte semanal de vuelos por drone: variación real vs L/ha teóricos, justificaciones.'
   },
   calibracion: {
-    titulo: 'CALIBRACIÓN DE <span>BOQUILLAS DRONE</span>', nombre: 'Calibración de boquillas',
+    titulo: 'Calibración de boquillas drone', nombre: 'Calibración de boquillas',
     url: '../CALIBRACION-DRONES/',
     api: 'https://script.google.com/macros/s/AKfycbx85tTKwFvkPBKEod0q1lTb5rFN7nDxTHyYR7GPs2yQ26xttpHwFRhCu62gkkNxHxmgIw/exec',
     abrirReporte: '#tRep',
@@ -306,7 +287,7 @@ const MODULOS = {
     descRep: 'Análisis de calibración de boquillas por dron; el PDF llega al correo del administrador.'
   },
   catalogo: {
-    titulo: 'CATÁLOGO <span>DE EQUIPO</span>', nombre: 'Catálogo de equipo',
+    titulo: 'Catálogo de equipo', nombre: 'Catálogo de equipo',
     url: '../EQUIPOS-MALEZAS/',
     api: 'https://script.google.com/macros/s/AKfycbz3N5fZG26mpmfivMX9PmQSoH_xGuwX2diCo4woF4-xWYo4ZI7LiUe-JTBn4RDziTAqPg/exec',
     abrirReporte: '[data-accion="reporte"]',
@@ -448,7 +429,7 @@ function entrarPortada(){
   const nom = String(SES.nombre || SES.usuario);
   $('#saludo').textContent = `${saludoHora()}, ${nom.split(' ')[0]}`;
   $('#quien').textContent = nom;
-  $('#rolTxt').textContent = esAdmin() ? 'Administrador' : 'Usuario';
+  $('#rolTxt').textContent = esAdmin() ? 'ADMINISTRADOR' : (SES.rol === 'PUBLICO' ? 'PÚBLICO' : 'USUARIO');
   $('#iniciales').textContent = nom.split(/\s+/).map(x => x[0]).join('').slice(0, 2).toUpperCase();
   $('#tileReportes').classList.toggle('oculto', !esAdmin());
   ['drones','calibracion','catalogo'].forEach(k => $(`[data-abrir="${k}"]`).classList.toggle('oculto', !puede(k)));
@@ -456,7 +437,7 @@ function entrarPortada(){
   vis.forEach((t, i) => t.style.gridColumn = (vis.length % 2 && i === vis.length - 1) ? '1 / -1' : '');
   $$('[data-estado]').forEach(e => {
     const ok = SES.mods ? SES.mods[e.dataset.estado] !== false : true;
-    e.textContent = ok ? '● conectado' : 'pedirá ingreso';
+    e.textContent = ok ? 'Conectado' : 'Pedirá ingreso';
     e.classList.toggle('ok', ok);
   });
   router();
@@ -549,7 +530,7 @@ function pintarReportes(yaCargado){
     const lista = h.filter(x => x.mod === k);
     const filas = lista.slice(0, 50).map((x, i) => `<tr><td>${lista.length - i}</td><td>${esc(isNaN(new Date(x.fecha)) || HIST_CENTRAL ? x.fecha : fmt.format(new Date(x.fecha)))}</td><td>${esc(x.usuario)}</td></tr>`).join('');
     return `<section class="grupo">
-      <header>${ICONOS[k]}<div><h2>${esc(m.nombre.toUpperCase())}</h2><p>${esc(m.descRep)}</p></div>
+      <header>${ICONOS[k]}<div><h2>${esc(m.nombre)}</h2><p>${esc(m.descRep)}</p></div>
         <div class="cuenta">${lista.length}<small>generados</small></div>
         <button class="btn prim" type="button" data-genrep="${k}">Generar reporte</button></header>
       ${lista.length ? `<table><thead><tr><th>#</th><th>Fecha</th><th>Generado por</th></tr></thead><tbody>${filas}</tbody></table>` : `<p class="vacio">Aún no hay reportes generados en este grupo.</p>`}
