@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>MDE MT · Malezas y Madurantes</title>
 <meta name="theme-color" content="#2e7d32">
+<script>/* MDE MT · modo día/noche compartido por las apps (clave mde_tema) */try{if(localStorage.getItem('mde_tema')==='oscuro')document.documentElement.setAttribute('data-tema','oscuro')}catch(e){}</script>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -24,7 +25,29 @@
   --bad:#a93224; --bad-soft:#fde4de;
   --radius:26px;
   --shadow:0 6px 18px rgba(46,125,50,.08);
+  --banda:#2e7d32; --btn-hover:#1f6b25;
+  color-scheme:light;
 }
+/* ---------- MODO NOCHE ---------- */
+html[data-tema="oscuro"]{
+  --ink:#e6efe7; --ink-2:#c6d4c9; --ink-3:#97a89b;
+  --paper:#0d1310; --card:#161f19; --line:#26332a; --field:#1f2a22;
+  --text:#e6efe7; --muted:#97a89b;
+  --accent:#3b9a41; --accent-dk:#8fd694; --accent-soft:#1d3b22;
+  --bad:#ff8a7a; --bad-soft:#3a1d19;
+  --shadow:0 6px 18px rgba(0,0,0,.35);
+  --banda:#17361b; --btn-hover:#2f8a36;
+  color-scheme:dark;
+}
+html[data-tema="oscuro"] .caja{box-shadow:0 14px 40px rgba(0,0,0,.5)}
+.tema-btn{width:40px;height:40px;padding:0;justify-content:center}
+.pildora.tema-btn svg{width:21px;height:21px;flex:none}
+html[data-tema="oscuro"] .t-drones{--falla:linear-gradient(135deg,#1f3d24,#2a5a30)}
+html[data-tema="oscuro"] .t-calib {--falla:linear-gradient(135deg,#21402a,#2f6436)}
+html[data-tema="oscuro"] .t-catal {--falla:linear-gradient(135deg,#2c3f1f,#45612b)}
+html[data-tema="oscuro"] .t-report{--falla:linear-gradient(135deg,#1c3d36,#285a4f)}
+html[data-tema="oscuro"] .tile .foto{filter:brightness(.82)}
+.tema-btn span{display:none}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{min-height:100%}
 body{background:var(--paper);color:var(--text);font:15px/1.45 'Nunito',system-ui,sans-serif;font-weight:600;-webkit-font-smoothing:antialiased}
@@ -34,15 +57,17 @@ h1,h2,h3{font-weight:900}
 .envoltura{width:min(1080px,100%);margin:0 auto;padding:0 16px}
 
 /* ---------- banda verde (como Calibración) ---------- */
-.banda{background:var(--accent);color:#fff;border-radius:0 0 var(--radius) var(--radius);padding-top:env(safe-area-inset-top)}
+.banda{background:var(--banda);color:#fff;border-radius:0 0 var(--radius) var(--radius);padding-top:env(safe-area-inset-top)}
 .pildora{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.16);color:#fff;font-weight:800;font-size:14px;text-decoration:none;white-space:nowrap}
 .pildora:hover{background:rgba(255,255,255,.26)}
-.pildora.blanca{background:#fff;color:var(--accent-dk)}
+.pildora.blanca{background:var(--card);color:var(--accent-dk)}
 .pildora svg{width:17px;height:17px}
 
 /* ---------- LOGIN ---------- */
 #login{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
-#login .banda{text-align:center;padding:44px 16px 90px}
+#login .banda{text-align:center;padding:44px 16px 90px;position:relative}
+.caja{position:relative;z-index:1}
+.tema-login{position:absolute;top:calc(14px + env(safe-area-inset-top));right:14px}
 #login .banda img{height:142px;display:block;margin:0 auto 16px}
 #login h1{font-size:28px;line-height:1.15}
 #login .banda p{opacity:.9;font-weight:600;font-size:14px;margin-top:6px}
@@ -55,7 +80,7 @@ input:focus{border-color:var(--accent)}
 .recordar input{accent-color:var(--accent);width:18px;height:18px}
 .btn{min-height:52px;border-radius:18px;padding:10px 20px;font-weight:900;font-size:16px;background:var(--field);color:var(--accent-dk)}
 .btn.prim{background:var(--accent);color:#fff}
-.btn.prim:hover{background:var(--accent-dk)}
+.btn.prim:hover{background:var(--btn-hover)}
 .btn:disabled{opacity:.6;cursor:default}
 .error{color:var(--bad);font-size:14px;min-height:1.2em}
 .nota{color:var(--muted);font-size:13px;font-weight:600}
@@ -103,7 +128,7 @@ input:focus{border-color:var(--accent)}
 
 /* ---------- MÓDULO (app dentro de la portada) ---------- */
 #modulo{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--paper);z-index:20}
-.barra{display:flex;align-items:center;gap:10px;padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top));background:var(--accent);color:#fff;min-height:58px}
+.barra{display:flex;align-items:center;gap:10px;padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top));background:var(--banda);color:#fff;min-height:58px}
 .barra h2{font-size:18px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .barra .sigla{font-size:11px}
 .marcos{flex:1;position:relative}
@@ -155,6 +180,7 @@ input:focus{border-color:var(--accent)}
 <!-- ============================ LOGIN ============================ -->
 <section id="login">
   <div class="banda">
+    <button class="pildora tema-btn tema-login" data-tema-btn type="button"></button>
     <img src="logo.png" alt="Ingenio Madre Tierra">
     <h1>Malezas y Madurantes</h1>
     <p>Drones y equipos · <span class="sigla">MDE MT</span></p>
@@ -182,7 +208,7 @@ input:focus{border-color:var(--accent)}
       <div class="cab">
         <img src="logo.png" alt="Ingenio Madre Tierra">
         <div class="hola"><b id="saludo">Bienvenido</b><small id="rolTxt"></small></div>
-        <div class="acciones"><button class="pildora" id="btnSalir" type="button">Salir</button></div>
+        <div class="acciones"><button class="pildora tema-btn" data-tema-btn type="button"></button><button class="pildora" id="btnSalir" type="button">Salir</button></div>
       </div>
       <div class="titulo-app">
         <h1>Malezas y Madurantes</h1><span class="sigla">MDE MT</span>
@@ -230,6 +256,7 @@ input:focus{border-color:var(--accent)}
       <div class="cab">
         <button class="pildora blanca" type="button" data-ir="inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Portada</button>
         <div class="hola"><b>Reportes</b><small>Generados por grupo</small></div>
+        <div class="acciones"><button class="pildora tema-btn" data-tema-btn type="button"></button></div>
       </div>
     </div>
   </div>
@@ -247,6 +274,7 @@ input:focus{border-color:var(--accent)}
     <button class="pildora blanca" type="button" data-ir="inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Portada</button>
     <h2 id="tituloModulo"></h2>
     <span class="sigla">MDE MT</span>
+    <button class="pildora tema-btn" data-tema-btn type="button"></button>
   </div>
   <div class="marcos" id="marcos">
     <div class="cargando" id="cargando"><div><div class="giro"></div>Abriendo módulo…</div></div>
@@ -548,6 +576,43 @@ $('#btnBorrarHist').onclick = () => { if (confirm('¿Borrar el historial de repo
 const EN_APP = !!window.AppAndroid || /MDEMTApp/.test(navigator.userAgent);
 if (!EN_APP && /Android/i.test(navigator.userAgent)) $('#descargaApp').classList.remove('oculto');
 if (SES) entrarPortada(); else mostrar('login');
+</script>
+<script>
+/* ===== MDE MT · modo día / noche =====
+   Una sola preferencia (localStorage "mde_tema") para la portada MDE MT, Calibración,
+   Vuelos Drones y Catálogo de equipos: si se cambia en una, las demás cambian solas. */
+(function(){
+  var K = 'mde_tema';
+  var LUNA = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>';
+  var SOL = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>';
+  function leer(){ try { return localStorage.getItem(K) === 'oscuro' ? 'oscuro' : 'claro'; } catch(e){ return 'claro'; } }
+  function aplicar(t){
+    var r = document.documentElement;
+    if (t === 'oscuro') r.setAttribute('data-tema', 'oscuro'); else r.removeAttribute('data-tema');
+    var bs = document.querySelectorAll('[data-tema-btn]');
+    for (var i = 0; i < bs.length; i++){
+      var b = bs[i], txt = b.getAttribute('data-tema-btn') === 'texto';
+      b.innerHTML = (t === 'oscuro' ? SOL : LUNA) + (txt ? '<span>' + (t === 'oscuro' ? 'Modo día' : 'Modo noche') + '</span>' : '');
+      b.title = t === 'oscuro' ? 'Cambiar a modo día' : 'Cambiar a modo noche';
+      b.setAttribute('aria-label', b.title);
+    }
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m){ if (!m.getAttribute('data-claro')) m.setAttribute('data-claro', m.content); m.content = t === 'oscuro' ? '#14301a' : m.getAttribute('data-claro'); }
+    try { window.dispatchEvent(new CustomEvent('mde-tema', { detail: t })); } catch(e){}
+  }
+  window.mdeTema = {
+    get: leer,
+    poner: function(t){ try { localStorage.setItem(K, t); } catch(e){} aplicar(t); },
+    alternar: function(){ this.poner(leer() === 'oscuro' ? 'claro' : 'oscuro'); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest && e.target.closest('[data-tema-btn]');
+    if (b){ e.preventDefault(); window.mdeTema.alternar(); }
+  });
+  window.addEventListener('storage', function(e){ if (e.key === K) aplicar(e.newValue === 'oscuro' ? 'oscuro' : 'claro'); });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ aplicar(leer()); });
+  else aplicar(leer());
+})();
 </script>
 </body>
 </html>
