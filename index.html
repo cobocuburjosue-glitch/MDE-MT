@@ -186,6 +186,7 @@ input:focus{border-color:var(--accent)}
 .t-drones{--img:url("fondos/dashboard-drones.jpg");--falla:linear-gradient(135deg,#cfe8c8,#9fd09a)}
 .t-calib {--img:url("fondos/calibracion-boquillas.jpg");--falla:linear-gradient(135deg,#d8ecd2,#acd8a4)}
 .t-catal {--img:url("fondos/catalogo-equipos.jpg");--falla:linear-gradient(135deg,#e3efd6,#bcd99c)}
+.t-catal .foto{background-position:center 38%,center}
 .t-report{--img:url("fondos/reportes.jpg");--falla:linear-gradient(135deg,#d3ebe3,#9ccfbc)}
 
 /* ---------- encabezado con amanecer ---------- */
@@ -274,9 +275,11 @@ input:focus{border-color:var(--accent)}
 html[data-tema="oscuro"]{--am-cielo1:#0f191b;--am-cielo2:#10211e;--am-cielo3:#122820;--am-cielo4:#143023;--am-loma:#132a20;--am-campo:#16331f}
 html[data-tema="oscuro"] body{background-image:none}
 /* tarjeta Dashboard Drones: foto del drone como en las tarjetas de Vuelos */
-.dr-foto{display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(180deg,#ffe1c4 0%,#ffc79a 55%,#f39a6b 100%)}
+.dr-foto{display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(180deg,#e6f6ff 0%,#c4e8fb 55%,#9fd6f3 100%)}
+html[data-tema="oscuro"] .dr-foto{background:linear-gradient(180deg,#123247 0%,#17405a 60%,#1c4d6b 100%)}
+.dr-foto .sol-dr{display:none!important}
 .dr-foto .sol-dr{position:absolute;right:16%;top:18px;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,#fff6d6 0,#ffd27a 55%,rgba(255,210,122,0) 72%)}
-.dr-foto img{position:relative;display:block;height:78px;margin:0 auto;filter:drop-shadow(0 8px 8px rgba(60,30,20,.25))}
+.dr-foto img{position:relative;display:block;height:78px;margin:0 auto;filter:drop-shadow(0 8px 8px rgba(20,50,70,.25))}
 .dr-foto .chorro{position:relative;display:block;width:150px;height:40px;margin:-4px auto 0}
 .dr-foto .cana-dr{position:relative;height:14px;background:repeating-linear-gradient(100deg,#2f5a2c 0 6px,#3f7038 6px 12px);border-top:2px solid #2e7d32}
 html[data-tema="oscuro"] .dr-foto .cana-dr{background:repeating-linear-gradient(100deg,#14261a 0 6px,#1f3a25 6px 12px);border-top-color:#34d89c}
