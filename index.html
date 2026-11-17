@@ -345,7 +345,7 @@ html[data-tema="oscuro"] .dr-foto .cana-dr{background:repeating-linear-gradient(
           <div class="fila"><span class="estado" data-estado="drones"></span><span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div>
       </button>
       <button class="tile t-calib" data-abrir="calibracion" type="button">
-        <div class="foto"><svg class="ilus" viewBox="0 0 600 170" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="gCal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--am-cielo1)"/><stop offset=".6" style="stop-color:var(--am-cielo2)"/><stop offset="1" style="stop-color:var(--am-cielo3)"/></linearGradient></defs><rect width="600" height="170" fill="url(#gCal)"/><circle class="am-sol" cx="500" cy="150" r="56" style="fill:var(--am-sol2)" opacity=".55"/><path d="M0 150 C 160 136, 400 160, 600 142 L600 170 L0 170Z" style="fill:var(--am-campo)"/><g class="mueve"><path d="M150 22 H450" stroke="#4f6155" stroke-width="7" stroke-linecap="round"/><path d="M180 22 v10 M420 22 v10" stroke="#4f6155" stroke-width="4"/><rect x="284" y="16" width="32" height="24" rx="5" fill="#2f3b33"/><path d="M292 40 h16 l-3 12 h-10z" fill="#5b6b60"/><polygon class="am-fan" points="300,52 236,150 364,150" style="fill:var(--am-menta)" fill-opacity=".28"/><polygon class="am-fan" points="300,52 266,150 334,150" style="fill:var(--am-menta)" fill-opacity=".45"/><polyline points="246,150 300,52 354,150" fill="none" stroke="#2f3b33" stroke-width="1.5" stroke-dasharray="4 4" opacity=".5"/><g style="fill:var(--am-menta)" opacity=".85"><circle cx="278" cy="104" r="2.4"/><circle cx="322" cy="116" r="2.4"/><circle cx="300" cy="132" r="2.8"/><circle cx="284" cy="138" r="2"/><circle cx="314" cy="92" r="2"/></g></g></svg><span class="icono"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8h32"/><path d="M24 8v8"/><rect x="18" y="16" width="12" height="7" rx="1.5"/><path d="M21 23l-1 4h8l-1-4"/><path d="M24 30l-10 12M24 30l-4 13M24 30v13M24 30l4 13M24 30l10 12" opacity=".8"/></svg></span></div>
+        <div class="foto"><div class="ilus dr-foto"><img src="fondos/t30.webp" alt=""><svg class="chorro" viewBox="0 0 180 64" preserveAspectRatio="none" aria-hidden="true"><polygon points="90,0 22,64 158,64" fill="#ffffff" fill-opacity=".25"/><polygon class="am-fan" points="90,0 42,64 138,64" fill="#2fcf95" fill-opacity=".6"/><polyline points="37,64 90,0 143,64" fill="none" stroke="#3b1d2a" stroke-width="1.6" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"/></svg><div class="cana-dr"></div></div><span class="icono"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8h32"/><path d="M24 8v8"/><rect x="18" y="16" width="12" height="7" rx="1.5"/><path d="M21 23l-1 4h8l-1-4"/><path d="M24 30l-10 12M24 30l-4 13M24 30v13M24 30l4 13M24 30l10 12" opacity=".8"/></svg></span></div>
         <div class="cuerpo"><h3>Calibración de boquillas drone</h3><small>Registro y análisis por dron</small>
           <div class="fila"><span class="estado" data-estado="calibracion"></span><span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div>
       </button>
@@ -442,9 +442,9 @@ const MODULOS = {
   }
 };
 const ICONOS = {
-  drones: document.querySelector('.t-drones svg').outerHTML,
-  calibracion: document.querySelector('.t-calib svg').outerHTML,
-  catalogo: document.querySelector('.t-catal svg').outerHTML
+  drones: (document.querySelector('.t-drones .icono svg')||document.querySelector('.t-drones svg')).outerHTML,
+  calibracion: (document.querySelector('.t-calib .icono svg')||document.querySelector('.t-calib svg')).outerHTML,
+  catalogo: (document.querySelector('.t-catal .icono svg')||document.querySelector('.t-catal svg')).outerHTML
 };
 
 /* ============================ utilidades ============================ */
