@@ -5,32 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>MDE MT · Malezas y Madurantes</title>
 <meta name="theme-color" content="#2e7d32">
-<script>/* MDE MT · modo día/noche compartido (clave mde_tema). Abre en oscuro (Neón al amanecer). */try{if(localStorage.getItem('mde_tema')!=='claro')document.documentElement.setAttribute('data-tema','oscuro')}catch(e){document.documentElement.setAttribute('data-tema','oscuro')}</script>
-<script>
-/* ===== MDE MT · escena de amanecer (cielo, sol, cañaveral y drone) ===== */
-window.amEscena = function(o){
-  o = o || {};
-  var id = 'am' + Math.random().toString(36).slice(2, 7), w = 620, h = 220, canas = '';
-  for (var x = 6; x < w + 20; x += 34){
-    var a = 38 + ((x * 7) % 17);
-    canas += '<path class="am-cana-v" style="animation-delay:' + ((x % 5) * .3) + 's" d="M' + x + ' 224 q -5 -' + a + ' 2 -' + (a + 30) + ' M' + x + ' ' + (224 - a * .9) + ' q 15 -12 27 -6 M' + (x + 2) + ' ' + (224 - a * 1.4) + ' q -15 -10 -26 -2" stroke="var(--am-cana)" stroke-width="4" fill="none" stroke-linecap="round"/>';
-  }
-  var est = '';
-  [[40,20],[120,36],[210,14],[300,28],[90,60],[250,50],[380,22],[160,84]].forEach(function(p){ est += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="1.2" fill="#fff" style="opacity:var(--am-estrella)"/>'; });
-  return '<svg class="am-escena" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs>'
-    + '<linearGradient id="' + id + 'c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--am-cielo1)"/><stop offset=".45" style="stop-color:var(--am-cielo2)"/><stop offset=".78" style="stop-color:var(--am-cielo3)"/><stop offset="1" style="stop-color:var(--am-cielo4)"/></linearGradient>'
-    + '<radialGradient id="' + id + 's"><stop offset="0" style="stop-color:var(--am-sol1)"/><stop offset=".5" style="stop-color:var(--am-sol2)"/><stop offset="1" style="stop-color:var(--am-sol2);stop-opacity:0"/></radialGradient></defs>'
-    + '<rect width="' + w + '" height="' + h + '" fill="url(#' + id + 'c)"/>' + est
-    + '<circle class="am-sol" cx="' + (o.solX || 470) + '" cy="168" r="72" fill="url(#' + id + 's)"/>'
-    + '<path d="M0 170 C 120 140, 240 160, 360 142 S 560 130, 620 146 L620 220 L0 220 Z" style="fill:var(--am-loma)"/>'
-    + '<path d="M0 196 C 160 176, 330 200, 620 178 L620 220 L0 220 Z" style="fill:var(--am-campo)"/>' + canas
-    + '<path d="M0 196 C 160 176, 330 200, 620 178" fill="none" style="stroke:var(--am-linea)" stroke-width="1.5" opacity=".75"/></svg>';
-};
-/* Drone volando con su aspersión. src: ruta de la imagen del drone sin fondo. */
-window.amDron = function(src, color){
-  return '<div class="am-dron am-vuela"><img src="' + src + '" alt=""><svg viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true"><polygon class="am-fan" points="50,0 16,60 84,60" fill="' + (color || 'var(--am-menta)') + '" fill-opacity=".32"/></svg></div>';
-};
-</script>
+<script>/* MDE MT · modo día/noche compartido por las apps (clave mde_tema) */try{if(localStorage.getItem('mde_tema')==='oscuro')document.documentElement.setAttribute('data-tema','oscuro')}catch(e){}</script>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -53,61 +28,25 @@ window.amDron = function(src, color){
   --banda:#2e7d32; --btn-hover:#1f6b25;
   color-scheme:light;
 }
-/* ---------- MODO NOCHE · NEÓN AL AMANECER (formal) ---------- */
+/* ---------- MODO NOCHE ---------- */
 html[data-tema="oscuro"]{
-  --ink:#e8f3ef; --ink-2:#c6d8d3; --ink-3:#8fa9a4;
-  --paper:#080c0e; --card:#0e1517; --line:#1e3236; --field:#121c1f;
-  --text:#e8f3ef; --muted:#8fa9a4;
-  --accent:#2fcf95; --accent-dk:#34d89c; --accent-soft:#10261f;
-  --bad:#ff6b7f; --bad-soft:#2a1218;
-  --shadow:0 8px 24px rgba(0,0,0,.45);
-  --banda:linear-gradient(110deg,#0b1215 0%,#0f191b 55%,#26141f 100%); --btn-hover:#26b883;
+  --ink:#e6efe7; --ink-2:#c6d4c9; --ink-3:#97a89b;
+  --paper:#0d1310; --card:#161f19; --line:#26332a; --field:#1f2a22;
+  --text:#e6efe7; --muted:#97a89b;
+  --accent:#3b9a41; --accent-dk:#8fd694; --accent-soft:#1d3b22;
+  --bad:#ff8a7a; --bad-soft:#3a1d19;
+  --shadow:0 6px 18px rgba(0,0,0,.35);
+  --banda:#17361b; --btn-hover:#2f8a36;
   color-scheme:dark;
 }
-html[data-tema="oscuro"] .banda,html[data-tema="oscuro"] .barra{border-bottom:1px solid #1e3236}
-html[data-tema="oscuro"] .btn.prim{color:#03170f;box-shadow:0 0 16px rgba(52,216,156,.22)}
-html[data-tema="oscuro"] .caja{box-shadow:0 14px 40px rgba(0,0,0,.55);border:1px solid #1e3236}
-html[data-tema="oscuro"] .tile{border-color:#1e3236}
-html[data-tema="oscuro"] .tile:hover,html[data-tema="oscuro"] .tile:focus-visible{border-color:rgba(52,216,156,.55);box-shadow:0 0 26px rgba(52,216,156,.12)}
-html[data-tema="oscuro"] .tile .foto .icono{border:1px solid #1e3236}
-html[data-tema="oscuro"] .tile:hover .ir{background:var(--accent)}
-html[data-tema="oscuro"] .tile:hover .ir svg{stroke:#03170f}
-html[data-tema="oscuro"] .grupo,html[data-tema="oscuro"] .filtros button{border:1px solid #1e3236}
-html[data-tema="oscuro"] .filtros button.activo{color:#03170f}
+html[data-tema="oscuro"] .caja{box-shadow:0 14px 40px rgba(0,0,0,.5)}
 .tema-btn{width:40px;height:40px;padding:0;justify-content:center}
 .pildora.tema-btn svg{width:21px;height:21px;flex:none}
-/* ===================== MDE MT · NEÓN AL AMANECER (común a las 4 apps) ===================== */
-:root{
-  --am-cielo1:#ffe9cf; --am-cielo2:#ffd2a6; --am-cielo3:#f6a877; --am-cielo4:#f08d63;
-  --am-sol1:#fff7dc; --am-sol2:#ffd27a; --am-loma:#e9b48f; --am-campo:#5d8f4f; --am-cana:#2f5a2c; --am-linea:#2e7d32;
-  --am-estrella:0; --am-menta:#2e7d32; --am-ambar:#c46a1c;
-}
-html[data-tema="oscuro"]{
-  --am-cielo1:#151027; --am-cielo2:#4a2440; --am-cielo3:#b85a38; --am-cielo4:#eea55a;
-  --am-sol1:#fff1c4; --am-sol2:#ffcf75; --am-loma:#33182a; --am-campo:#13241a; --am-cana:#0a1910; --am-linea:#34d89c;
-  --am-estrella:.7; --am-menta:#34d89c; --am-ambar:#ff9f5a;
-}
-html[data-tema="oscuro"] body{background-image:radial-gradient(1100px 520px at 88% -8%,rgba(255,159,90,.08),transparent 60%),radial-gradient(900px 460px at 6% 0%,rgba(52,216,156,.05),transparent 60%);background-attachment:fixed}
-.am-escena{position:absolute;inset:0;width:100%;height:100%;display:block}
-.am-dron{position:absolute;left:30%;top:6%;width:42%;max-width:270px;pointer-events:none}
-.am-dron img{display:block;width:100%;filter:drop-shadow(0 10px 14px rgba(0,0,0,.35))}
-.am-dron svg{display:block;width:46%;height:70px;margin:-10px auto 0}
-.am-eyebrow{color:var(--am-ambar);font-weight:800;letter-spacing:.04em;font-size:13px;text-transform:none}
-@media (prefers-reduced-motion: no-preference){
-  .am-vuela{animation:am-vuela 11s ease-in-out infinite alternate}
-  .am-sol{animation:am-sol 14s ease-in-out infinite alternate}
-  .am-fan{transform-box:fill-box;transform-origin:50% 0;animation:am-abrir 1.1s cubic-bezier(.2,.7,.2,1) backwards .3s}
-  .am-sube{animation:am-subir .55s cubic-bezier(.2,.7,.2,1) backwards}
-  .am-sube:nth-child(2){animation-delay:.05s}.am-sube:nth-child(3){animation-delay:.1s}.am-sube:nth-child(4){animation-delay:.15s}.am-sube:nth-child(n+5){animation-delay:.2s}
-  .am-latir{animation:am-latir 1.8s ease-in-out infinite}
-  .am-cana-v{transform-origin:bottom;transform-box:fill-box;animation:am-viento 4s ease-in-out infinite alternate}
-}
-@keyframes am-vuela{from{transform:translate(-26%,6px)}to{transform:translate(22%,-6px)}}
-@keyframes am-sol{to{transform:translateY(-18px)}}
-@keyframes am-abrir{from{transform:scaleX(0)}}
-@keyframes am-subir{from{opacity:0;transform:translateY(14px)}}
-@keyframes am-latir{50%{opacity:.35}}
-@keyframes am-viento{to{transform:skewX(-3deg)}}
+html[data-tema="oscuro"] .t-drones{--falla:linear-gradient(135deg,#1f3d24,#2a5a30)}
+html[data-tema="oscuro"] .t-calib {--falla:linear-gradient(135deg,#21402a,#2f6436)}
+html[data-tema="oscuro"] .t-catal {--falla:linear-gradient(135deg,#2c3f1f,#45612b)}
+html[data-tema="oscuro"] .t-report{--falla:linear-gradient(135deg,#1c3d36,#285a4f)}
+html[data-tema="oscuro"] .tile .foto{filter:brightness(.82)}
 .tema-btn span{display:none}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{min-height:100%}
@@ -126,12 +65,7 @@ h1,h2,h3{font-weight:900}
 
 /* ---------- LOGIN ---------- */
 #login{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
-#login .banda{text-align:center;padding:44px 16px 90px;position:relative;overflow:hidden}
-#login .banda > *{position:relative;z-index:1}
-#login .banda > .am-escena{position:absolute;z-index:0;opacity:.95}
-#login .banda > .tema-login{position:absolute;z-index:2}
-html:not([data-tema="oscuro"]) #login .banda > .am-escena{opacity:.35}
-#login .banda h1{text-shadow:0 2px 14px rgba(0,0,0,.35)}
+#login .banda{text-align:center;padding:44px 16px 90px;position:relative}
 .caja{position:relative;z-index:1}
 .tema-login{position:absolute;top:calc(14px + env(safe-area-inset-top));right:14px}
 #login .banda img{height:142px;display:block;margin:0 auto 16px}
@@ -188,31 +122,6 @@ input:focus{border-color:var(--accent)}
 .t-catal {--img:url("fondos/catalogo-equipos.jpg");--falla:linear-gradient(135deg,#e3efd6,#bcd99c)}
 .t-report{--img:url("fondos/reportes.jpg");--falla:linear-gradient(135deg,#d3ebe3,#9ccfbc)}
 
-/* ---------- encabezado con amanecer ---------- */
-#portada .banda{border-radius:0;padding-bottom:0}
-#portada .cab{padding:14px 0}
-.hero{position:relative;display:flex;flex-wrap:wrap;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-top:18px;border:1px solid var(--line)}
-.hero-txt{flex:1 1 340px;padding:26px 28px;display:flex;flex-direction:column;gap:6px;justify-content:center}
-.hero-txt h1{font-size:clamp(30px,5vw,44px);line-height:1.05}
-.hero-txt h1 span{color:var(--accent-dk)}
-.hero-txt p{color:var(--muted);font-weight:700}
-.hero-txt .sigla{background:var(--accent-soft);color:var(--accent-dk)}
-.hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.chip-h{display:inline-flex;align-items:center;gap:7px;background:var(--field);border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:13px;font-weight:800;color:var(--ink-2)}
-.chip-h i{width:9px;height:9px;border-radius:50%;background:var(--accent-dk);box-shadow:0 0 8px var(--accent-dk)}
-.hero-fig{flex:1 1 420px;min-height:250px;position:relative;overflow:hidden}
-.hero-fig::before{content:"";position:absolute;inset:0 auto 0 0;width:60px;background:linear-gradient(90deg,var(--card),transparent);z-index:2}
-/* ---------- ilustraciones de las tarjetas ---------- */
-.tile .foto{height:150px}
-.tile .foto .ilus{border-radius:var(--radius) var(--radius) 0 0;overflow:hidden}
-.tile .foto .ilus{position:absolute;inset:0;width:100%;height:100%}
-.tile .foto .icono{z-index:3}
-.tile .foto.con-img .ilus{display:none}
-.tile:hover .ilus .mueve{transform:translateY(-4px)}
-.ilus .mueve{transition:transform .35s}
-.am-mini-dron{position:absolute;left:50%;top:10%;width:46%;max-width:210px;transform:translateX(-50%)}
-.am-mini-dron img{width:100%;display:block;filter:drop-shadow(0 8px 10px rgba(0,0,0,.35))}
-.am-mini-dron svg{display:block;width:44%;height:52px;margin:-8px auto 0}
 .pie{margin:30px 0 22px;text-align:center;color:var(--muted);font-size:12px;font-weight:700}
 .descarga-app{text-align:center;margin:-8px 0 22px}
 .descarga-app a{display:inline-flex;align-items:center;gap:8px;background:var(--accent-soft);color:var(--accent-dk);font-weight:900;font-size:15px;text-decoration:none;border-radius:999px;padding:11px 22px}
@@ -259,10 +168,7 @@ input:focus{border-color:var(--accent)}
   #login .banda img{height:112px}
   .cab .hola b{font-size:17px}
   .mosaico{grid-template-columns:1fr}
-  .tile .foto{height:120px}
-  .hero-fig{min-height:190px;flex-basis:100%}
-  .hero-fig::before{display:none}
-  .hero-txt{padding:20px}
+  .tile .foto{height:86px}
   .barra .sigla{display:none}
   .grupo th:nth-child(3),.grupo td:nth-child(3){display:none}
   .grupo td:nth-child(2){border-radius:0 14px 14px 0}
@@ -304,18 +210,11 @@ input:focus{border-color:var(--accent)}
         <div class="hola"><b id="saludo">Bienvenido</b><small id="rolTxt"></small></div>
         <div class="acciones"><button class="pildora tema-btn" data-tema-btn type="button"></button><button class="pildora" id="btnSalir" type="button">Salir</button></div>
       </div>
-    </div>
-  </div>
-  <div class="envoltura">
-    <section class="hero am-sube">
-      <div class="hero-txt">
-        <small class="am-eyebrow" id="fechaHoy">Ingenio Madre Tierra</small>
-        <h1>Malezas y <span>Madurantes</span></h1>
-        <p>Drones y equipos · <span id="quien"></span> <span class="sigla">MDE MT</span></p>
-        <div class="hero-chips"><span class="chip-h"><i class="am-latir"></i><span id="nMods">Módulos conectados</span></span><span class="chip-h" id="chipRol"></span></div>
+      <div class="titulo-app">
+        <h1>Malezas y Madurantes</h1><span class="sigla">MDE MT</span>
+        <p>Drones y equipos · <span id="quien"></span></p>
       </div>
-      <div class="hero-fig" id="heroFig"></div>
-    </section>
+    </div>
   </div>
   <span id="iniciales" class="oculto"></span>
 
@@ -323,22 +222,22 @@ input:focus{border-color:var(--accent)}
     <div class="seccion"><h2>Módulos</h2><span class="nota">Seleccione el que desea utilizar</span></div>
     <div class="mosaico" id="mosaico">
       <button class="tile t-drones" data-abrir="drones" type="button">
-        <div class="foto"><div class="ilus" data-am-escena="dron"></div><span class="icono"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h12M32 12h12M10 12v4M38 12v4"/><path d="M10 16h28"/><rect x="18" y="16" width="12" height="9" rx="2"/><path d="M20 25l-3 7M28 25l3 7M24 25v4"/><path d="M17 38l-1 4M24 34v6M31 38l1 4" opacity=".7"/></svg></span></div>
+        <div class="foto"><span class="icono"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h12M32 12h12M10 12v4M38 12v4"/><path d="M10 16h28"/><rect x="18" y="16" width="12" height="9" rx="2"/><path d="M20 25l-3 7M28 25l3 7M24 25v4"/><path d="M17 38l-1 4M24 34v6M31 38l1 4" opacity=".7"/></svg></span></div>
         <div class="cuerpo"><h3>Dashboard Drones</h3><small>Vuelos DJI · variación real vs L/ha</small>
           <div class="fila"><span class="estado" data-estado="drones"></span><span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div>
       </button>
       <button class="tile t-calib" data-abrir="calibracion" type="button">
-        <div class="foto"><svg class="ilus" viewBox="0 0 600 170" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="gCal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--am-cielo1)"/><stop offset=".6" style="stop-color:var(--am-cielo2)"/><stop offset="1" style="stop-color:var(--am-cielo3)"/></linearGradient></defs><rect width="600" height="170" fill="url(#gCal)"/><circle class="am-sol" cx="500" cy="150" r="56" style="fill:var(--am-sol2)" opacity=".55"/><path d="M0 150 C 160 136, 400 160, 600 142 L600 170 L0 170Z" style="fill:var(--am-campo)"/><g class="mueve"><path d="M150 22 H450" stroke="#4f6155" stroke-width="7" stroke-linecap="round"/><path d="M180 22 v10 M420 22 v10" stroke="#4f6155" stroke-width="4"/><rect x="284" y="16" width="32" height="24" rx="5" fill="#2f3b33"/><path d="M292 40 h16 l-3 12 h-10z" fill="#5b6b60"/><polygon class="am-fan" points="300,52 236,150 364,150" style="fill:var(--am-menta)" fill-opacity=".28"/><polygon class="am-fan" points="300,52 266,150 334,150" style="fill:var(--am-menta)" fill-opacity=".45"/><polyline points="246,150 300,52 354,150" fill="none" stroke="#2f3b33" stroke-width="1.5" stroke-dasharray="4 4" opacity=".5"/><g style="fill:var(--am-menta)" opacity=".85"><circle cx="278" cy="104" r="2.4"/><circle cx="322" cy="116" r="2.4"/><circle cx="300" cy="132" r="2.8"/><circle cx="284" cy="138" r="2"/><circle cx="314" cy="92" r="2"/></g></g></svg><span class="icono"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8h32"/><path d="M24 8v8"/><rect x="18" y="16" width="12" height="7" rx="1.5"/><path d="M21 23l-1 4h8l-1-4"/><path d="M24 30l-10 12M24 30l-4 13M24 30v13M24 30l4 13M24 30l10 12" opacity=".8"/></svg></span></div>
+        <div class="foto"><span class="icono"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8h32"/><path d="M24 8v8"/><rect x="18" y="16" width="12" height="7" rx="1.5"/><path d="M21 23l-1 4h8l-1-4"/><path d="M24 30l-10 12M24 30l-4 13M24 30v13M24 30l4 13M24 30l10 12" opacity=".8"/></svg></span></div>
         <div class="cuerpo"><h3>Calibración de boquillas drone</h3><small>Registro y análisis por dron</small>
           <div class="fila"><span class="estado" data-estado="calibracion"></span><span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div>
       </button>
       <button class="tile t-catal" data-abrir="catalogo" type="button">
-        <div class="foto"><svg class="ilus" viewBox="0 0 600 170" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="gCat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--am-cielo1)"/><stop offset=".55" style="stop-color:var(--am-cielo2)"/><stop offset="1" style="stop-color:var(--am-cielo3)"/></linearGradient></defs><rect width="600" height="170" fill="url(#gCat)"/><circle class="am-sol" cx="120" cy="128" r="46" style="fill:var(--am-sol2)" opacity=".6"/><path d="M0 128 C 180 112, 420 136, 600 118 L600 170 L0 170Z" style="fill:var(--am-loma)"/><path d="M0 148 C 200 138, 400 156, 600 144 L600 170 L0 170Z" style="fill:var(--am-campo)"/><g class="mueve" transform="translate(150,0)"><rect x="98" y="70" width="110" height="40" rx="18" fill="#c9d6cf" stroke="#2f3b33" stroke-width="3"/><path d="M112 90 H194" stroke="#2f3b33" stroke-width="2" opacity=".35"/><path d="M208 80 h26 l16 18 v18 h-42z" fill="#2f3b33"/><rect x="220" y="85" width="14" height="10" rx="2" style="fill:var(--am-cielo2)"/><path d="M88 116 H254" stroke="#2f3b33" stroke-width="5" stroke-linecap="round"/><circle cx="122" cy="124" r="13" fill="#1b2420" stroke="#5b6b60" stroke-width="3"/><circle cx="228" cy="124" r="13" fill="#1b2420" stroke="#5b6b60" stroke-width="3"/><path d="M46 106 H94" stroke="#5b6b60" stroke-width="4" stroke-linecap="round"/><path d="M52 106 v9 M68 106 v9 M84 106 v9" stroke="#5b6b60" stroke-width="2"/></g></svg><span class="icono"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 30V20h14l4 8h12a4 4 0 0 1 4 4v2"/><path d="M14 20v-8h8l3 8"/><circle cx="14" cy="34" r="7"/><circle cx="14" cy="34" r="2"/><circle cx="36" cy="37" r="4"/><path d="M21 36h11"/></svg></span></div>
+        <div class="foto"><span class="icono"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 30V20h14l4 8h12a4 4 0 0 1 4 4v2"/><path d="M14 20v-8h8l3 8"/><circle cx="14" cy="34" r="7"/><circle cx="14" cy="34" r="2"/><circle cx="36" cy="37" r="4"/><path d="M21 36h11"/></svg></span></div>
         <div class="cuerpo"><h3>Catálogo de equipo</h3><small>Taller, campo y ubicación de equipos</small>
           <div class="fila"><span class="estado" data-estado="catalogo"></span><span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div>
       </button>
       <button class="tile t-report" data-abrir="reportes" id="tileReportes" type="button">
-        <div class="foto"><svg class="ilus" viewBox="0 0 600 170" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="gRep" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--am-cielo2)"/><stop offset="1" style="stop-color:var(--am-cielo3)"/></linearGradient></defs><rect width="600" height="170" fill="url(#gRep)"/><path d="M0 150 C 200 140, 400 158, 600 146 L600 170 L0 170Z" style="fill:var(--am-campo)"/><g class="mueve"><rect x="200" y="22" width="86" height="112" rx="10" fill="#e9efeb" stroke="#2f3b33" stroke-width="2.5" transform="rotate(-6 243 78)"/><rect x="262" y="16" width="96" height="124" rx="10" fill="#f7faf8" stroke="#2f3b33" stroke-width="2.5"/><path d="M276 34 H330 M276 44 H314" stroke="#2f3b33" stroke-width="3" stroke-linecap="round" opacity=".55"/><rect x="278" y="98" width="12" height="28" rx="3" fill="#2fcf95"/><rect x="296" y="80" width="12" height="46" rx="3" fill="#ffd166"/><rect x="314" y="64" width="12" height="62" rx="3" fill="#2fcf95"/><rect x="332" y="88" width="12" height="38" rx="3" fill="#ff9f5a"/><circle cx="378" cy="60" r="18" fill="none" stroke="#2f3b33" stroke-width="2.5" opacity=".0"/></g></svg><span class="icono"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M28 5H11v38h26V14z"/><path d="M28 5v9h9"/><path d="M17 36v-6M23 36V24M29 36v-9"/></svg></span></div>
+        <div class="foto"><span class="icono"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M28 5H11v38h26V14z"/><path d="M28 5v9h9"/><path d="M17 36v-6M23 36V24M29 36v-9"/></svg></span></div>
         <div class="cuerpo"><h3>Reportes</h3><small>Generados por grupo · solo administrador</small>
           <div class="fila"><span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div>
       </button>
@@ -569,7 +468,6 @@ function entrarPortada(){
     e.textContent = ok ? 'Conectado' : 'Pedirá ingreso';
     e.classList.toggle('ok', ok);
   });
-  amPortada();
   router();
 }
 function ir(dest){ if (location.hash !== '#' + dest) location.hash = dest; else router(); }
@@ -674,23 +572,6 @@ $('#reportes').addEventListener('click', ev => {
 $('#btnBorrarHist').classList.toggle('oculto', HAY_CENTRAL);
 $('#btnBorrarHist').onclick = () => { if (confirm('¿Borrar el historial de reportes de este dispositivo?')){ LS.del(HIST); pintarReportes(); } };
 
-/* ============================ amanecer ============================ */
-function amPortada(){
-  try {
-    $('#fechaHoy').textContent = 'Ingenio Madre Tierra · ' + new Intl.DateTimeFormat('es-GT', { weekday:'long', day:'numeric', month:'long', timeZone:'America/Guatemala' }).format(new Date());
-    const ks = ['drones','calibracion','catalogo'].filter(puede), ok = ks.filter(k => !SES.mods || SES.mods[k] !== false).length;
-    $('#nMods').textContent = `${ok} de ${ks.length} módulos conectados`;
-    $('#chipRol').textContent = esAdmin() ? 'Administrador' : (SES.rol === 'PUBLICO' ? 'Público' : 'Usuario');
-    if (!$('#heroFig').innerHTML) $('#heroFig').innerHTML = amEscena() + amDron('fondos/dron.webp');
-    $$('[data-am-escena="dron"]').forEach(e => { if (!e.innerHTML) e.innerHTML = amEscena({ solX:520 }) + '<div class="am-mini-dron mueve am-vuela"><img src="fondos/dron.webp" alt=""><svg viewBox="0 0 100 60" preserveAspectRatio="none"><polygon class="am-fan" points="50,0 14,60 86,60" style="fill:var(--am-menta)" fill-opacity=".35"/></svg></div>'; });
-    /* si el usuario subió su foto en fondos/, se usa en lugar del dibujo */
-    $$('#mosaico .tile').forEach(t => { const u = getComputedStyle(t).getPropertyValue('--img').match(/url\(["']?([^"')]+)/); if (!u) return;
-      const im = new Image(); im.onload = () => t.querySelector('.foto').classList.add('con-img'); im.src = u[1]; });
-  } catch(e){}
-}
-(function(){ const b = document.querySelector('#login .banda'); if (b && window.amEscena) b.insertAdjacentHTML('afterbegin', amEscena()); })();
-$$('#mosaico .tile').forEach(t => t.classList.add('am-sube'));
-
 /* ============================ inicio ============================ */
 const EN_APP = !!window.AppAndroid || /MDEMTApp/.test(navigator.userAgent);
 if (!EN_APP && /Android/i.test(navigator.userAgent)) $('#descargaApp').classList.remove('oculto');
@@ -704,7 +585,7 @@ if (SES) entrarPortada(); else mostrar('login');
   var K = 'mde_tema';
   var LUNA = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>';
   var SOL = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>';
-  function leer(){ try { return localStorage.getItem(K) === 'claro' ? 'claro' : 'oscuro'; } catch(e){ return 'oscuro'; } }
+  function leer(){ try { return localStorage.getItem(K) === 'oscuro' ? 'oscuro' : 'claro'; } catch(e){ return 'claro'; } }
   function aplicar(t){
     var r = document.documentElement;
     if (t === 'oscuro') r.setAttribute('data-tema', 'oscuro'); else r.removeAttribute('data-tema');
@@ -716,7 +597,7 @@ if (SES) entrarPortada(); else mostrar('login');
       b.setAttribute('aria-label', b.title);
     }
     var m = document.querySelector('meta[name="theme-color"]');
-    if (m){ if (!m.getAttribute('data-claro')) m.setAttribute('data-claro', m.content); m.content = t === 'oscuro' ? '#0b1215' : m.getAttribute('data-claro'); }
+    if (m){ if (!m.getAttribute('data-claro')) m.setAttribute('data-claro', m.content); m.content = t === 'oscuro' ? '#14301a' : m.getAttribute('data-claro'); }
     try { window.dispatchEvent(new CustomEvent('mde-tema', { detail: t })); } catch(e){}
   }
   window.mdeTema = {
@@ -728,7 +609,7 @@ if (SES) entrarPortada(); else mostrar('login');
     var b = e.target.closest && e.target.closest('[data-tema-btn]');
     if (b){ e.preventDefault(); window.mdeTema.alternar(); }
   });
-  window.addEventListener('storage', function(e){ if (e.key === K) aplicar(e.newValue === 'claro' ? 'claro' : 'oscuro'); });
+  window.addEventListener('storage', function(e){ if (e.key === K) aplicar(e.newValue === 'oscuro' ? 'oscuro' : 'claro'); });
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ aplicar(leer()); });
   else aplicar(leer());
 })();
