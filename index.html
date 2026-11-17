@@ -8,7 +8,7 @@
 <script>/* MDE MT · modo día/noche compartido (clave mde_tema). Abre en oscuro (Neón al amanecer). */try{if(localStorage.getItem('mde_tema')!=='claro')document.documentElement.setAttribute('data-tema','oscuro')}catch(e){document.documentElement.setAttribute('data-tema','oscuro')}</script>
 <script>
 /* ===== MDE MT · escena de amanecer (cielo, sol, cañaveral y drone) ===== */
-window.amEscena = function(o){
+window.amEscena = function(o){ return ''; /* fondo de amanecer quitado */
   o = o || {};
   var id = 'am' + Math.random().toString(36).slice(2, 7), w = 620, h = 220, canas = '';
   for (var x = 6; x < w + 20; x += 34){
@@ -267,6 +267,12 @@ input:focus{border-color:var(--accent)}
   .grupo th:nth-child(3),.grupo td:nth-child(3){display:none}
   .grupo td:nth-child(2){border-radius:0 14px 14px 0}
 }
+/* ===== Sin fondo de amanecer (pedido de Cobo): encabezados solo con texto, ilustraciones en fondo neutro ===== */
+.hero-fig,.am-hero .fig,.am-hero-cal .fig,.am-hero-eq .fig{display:none!important}
+.am-sol,.am-escena{display:none!important}
+:root{--am-cielo1:#f2f7f0;--am-cielo2:#e6f0e2;--am-cielo3:#d8e9d2;--am-cielo4:#cde3c6;--am-loma:#cfe3c8;--am-campo:#b9d6b0}
+html[data-tema="oscuro"]{--am-cielo1:#0f191b;--am-cielo2:#10211e;--am-cielo3:#122820;--am-cielo4:#143023;--am-loma:#132a20;--am-campo:#16331f}
+html[data-tema="oscuro"] body{background-image:none}
 </style>
 </head>
 <body>
@@ -323,7 +329,7 @@ input:focus{border-color:var(--accent)}
     <div class="seccion"><h2>Módulos</h2><span class="nota">Seleccione el que desea utilizar</span></div>
     <div class="mosaico" id="mosaico">
       <button class="tile t-drones" data-abrir="drones" type="button">
-        <div class="foto"><div class="ilus" data-am-escena="dron"></div><span class="icono"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h12M32 12h12M10 12v4M38 12v4"/><path d="M10 16h28"/><rect x="18" y="16" width="12" height="9" rx="2"/><path d="M20 25l-3 7M28 25l3 7M24 25v4"/><path d="M17 38l-1 4M24 34v6M31 38l1 4" opacity=".7"/></svg></span></div>
+        <div class="foto"><svg class="ilus" viewBox="0 0 600 170" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="gDr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--am-cielo1)"/><stop offset="1" style="stop-color:var(--am-cielo3)"/></linearGradient></defs><rect width="600" height="170" fill="url(#gDr)"/><path d="M0 150 C 160 136, 400 160, 600 142 L600 170 L0 170Z" style="fill:var(--am-campo)"/><g class="mueve" transform="translate(220,6)"><polygon class="am-fan" points="80,84 30,150 130,150" style="fill:var(--am-menta)" fill-opacity=".35"/><path d="M62 34 L26 22 M98 34 L134 22" stroke="#2f3b33" stroke-width="5" stroke-linecap="round"/><path d="M62 44 L22 30 M98 44 L138 30" stroke="#5b6b60" stroke-width="3" stroke-linecap="round"/><ellipse cx="22" cy="16" rx="22" ry="3.2" fill="#8d9a91"/><ellipse cx="138" cy="16" rx="22" ry="3.2" fill="#8d9a91"/><circle cx="22" cy="16" r="2.6" fill="#2f3b33"/><circle cx="138" cy="16" r="2.6" fill="#2f3b33"/><path d="M64 52 L52 76 M96 52 L108 76 M46 76 L58 76 M102 76 L114 76" stroke="#5b6b60" stroke-width="3" stroke-linecap="round"/><rect x="58" y="24" width="44" height="26" rx="9" fill="#2f3b33"/><rect x="64" y="48" width="32" height="22" rx="6" fill="#e9efeb" stroke="#2f3b33" stroke-width="2.5"/><path d="M76 70 L84 70 L82 80 L78 80 Z" fill="#2f3b33"/></g></svg><span class="icono"><svg viewBox="0 0 48 48" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h12M32 12h12M10 12v4M38 12v4"/><path d="M10 16h28"/><rect x="18" y="16" width="12" height="9" rx="2"/><path d="M20 25l-3 7M28 25l3 7M24 25v4"/><path d="M17 38l-1 4M24 34v6M31 38l1 4" opacity=".7"/></svg></span></div>
         <div class="cuerpo"><h3>Dashboard Drones</h3><small>Vuelos DJI · variación real vs L/ha</small>
           <div class="fila"><span class="estado" data-estado="drones"></span><span class="ir"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div>
       </button>
