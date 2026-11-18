@@ -31,7 +31,8 @@ const COLS = {
   REPORTES: ['FECHA Y HORA', 'GRUPO', 'MODULO', 'USUARIO', 'NOMBRE']
 };
 
-function ss_() { return SpreadsheetApp.getActiveSpreadsheet(); }
+const ID_HOJA = '1ebBKYlrudAK_2jsPgJiEn7Va9V-MYbNoxmDAwLydQMA';   // hoja USUARIOS MDE MT
+function ss_() { return SpreadsheetApp.getActiveSpreadsheet() || SpreadsheetApp.openById(ID_HOJA); }
 function norm_(s) { return String(s == null ? '' : s).normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase().replace(/\s+/g, ' ').trim(); }
 function ahora_() { return Utilities.formatDate(new Date(), TZ, 'yyyy-MM-dd HH:mm'); }
 function json_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }

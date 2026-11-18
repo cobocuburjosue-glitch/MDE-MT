@@ -2,7 +2,7 @@
    MDE MT · configuración compartida (la usan la portada y las 3 apps)
    MDE_API: URL /exec del Apps Script de la hoja "USUARIOS MDE MT".
    ===================================================================== */
-window.MDE_API = 'PEGAR_AQUI_LA_URL_DEL_APPS_SCRIPT_USUARIOS_MDE_MT';
+window.MDE_API = 'https://script.google.com/macros/s/AKfycbyg1l-joKgkvRaM5yPalcxpp1IxwOt1koMuO3TFJsc17NKvPguxCRE05qzffJEVqB7HzQ/exec';
 
 /* Dispositivo desde el que se entra (para el historial de accesos) */
 window.mdeDispositivo = function(){
