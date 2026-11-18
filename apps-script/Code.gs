@@ -10,7 +10,7 @@
      USUARIOS  USUARIO · CONTRASEÑA · NOMBRE · CORREO · ROL ·
                DASHBOARD DRONES · CALIBRACION BOQUILLAS · CATALOGO EQUIPOS ·
                BOTONES EXTRAS CALIBRACION · ACTIVO
-     ACCESOS   registro de cada ingreso a la portada
+     ACCESOS   historial de inicios de sesión: quién entró, cuándo y a qué módulo
      REPORTES  historial de reportes generados (por grupo)
 
    Instalar: Extensiones › Apps Script › pegar este archivo › ejecutar
@@ -22,11 +22,12 @@ const TZ = 'America/Guatemala';
 const TOKEN_DIAS = 30;
 const MODULOS = { drones: 'DASHBOARD DRONES', calibracion: 'CALIBRACION BOQUILLAS', catalogo: 'CATALOGO EQUIPOS' };
 const NOMBRE_MOD = { drones: 'Dashboard Drones', calibracion: 'Calibración de boquillas', catalogo: 'Catálogo de equipo' };
+const NOMBRE_ACC = Object.assign({ portada: 'Portada MDE MT' }, NOMBRE_MOD);
 
 const COLS = {
   USUARIOS: ['USUARIO', 'CONTRASEÑA', 'NOMBRE', 'CORREO', 'ROL', 'DASHBOARD DRONES', 'CALIBRACION BOQUILLAS',
              'CATALOGO EQUIPOS', 'BOTONES EXTRAS CALIBRACION', 'ACTIVO'],
-  ACCESOS:  ['FECHA Y HORA', 'USUARIO', 'NOMBRE', 'APELLIDO', 'CORREO', 'DISPOSITIVO'],
+  ACCESOS:  ['FECHA Y HORA', 'USUARIO', 'NOMBRE', 'APELLIDO', 'CORREO', 'DISPOSITIVO', 'MODULO', 'ORIGEN'],
   REPORTES: ['FECHA Y HORA', 'GRUPO', 'MODULO', 'USUARIO', 'NOMBRE']
 };
 
@@ -37,6 +38,9 @@ function json_(o) { return ContentService.createTextOutput(JSON.stringify(o)).se
 function hoja_(n) {
   let sh = ss_().getSheetByName(n);
   if (!sh) { sh = ss_().insertSheet(n); sh.appendRow(COLS[n]); sh.getRange(1, 1, 1, COLS[n].length).setFontWeight('bold'); sh.setFrozenRows(1); }
+  else if (sh.getLastColumn() < COLS[n].length) {            // agrega columnas nuevas (MODULO, ORIGEN) a hojas viejas
+    sh.getRange(1, 1, 1, COLS[n].length).setValues([COLS[n]]).setFontWeight('bold');
+  }
   return sh;
 }
 
@@ -67,14 +71,21 @@ function leerUsuarios_() {
 }
 
 function login_(p) {
-  const u = leerUsuarios_().find(x => norm_(x.usuario) === norm_(p.usuario));
+  const lista = leerUsuarios_();
+  const u = lista.find(x => norm_(x.usuario) === norm_(p.usuario)) || (p.soloRegistro ? lista.find(x => norm_(x.nombre) === norm_(p.usuario)) : null);
   if (!u || u.clave !== String(p.clave || '').trim()) return { ok: false, error: 'Usuario o contraseña incorrectos.' };
   if (!u.activo) return { ok: false, error: 'Este usuario está desactivado. Consulte al administrador.' };
   if (u.rol === 'PUBLICO') {
     if (!p.nombre || !p.apellido) return { ok: false, falta: 'correo', error: 'Escriba su nombre y apellido.' };
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(p.correo || '')) return { ok: false, falta: 'correo', error: 'Escriba un correo válido.' };
   }
-  hoja_('ACCESOS').appendRow([ahora_(), u.usuario, p.nombre || u.nombre, p.apellido || '', p.correo || u.correo, p.dispositivo || '']);
+  // Entrada directa a una app (sin pasar por la portada): solo se anota en el historial, sin abrir sesión de portada
+  if (p.soloRegistro) {
+    if (!u.modulos[p.modulo]) return { ok: false, error: 'Sin acceso a ese módulo.' };
+    anotarAcceso_(u, p, p.modulo, 'App directa');
+    return { ok: true };
+  }
+  anotarAcceso_(u, p, 'portada', 'Portada');
   const props = PropertiesService.getScriptProperties();
   limpiarTokens_(props);
   const token = Utilities.getUuid();
@@ -101,6 +112,24 @@ function limpiarTokens_(props) {
   });
 }
 
+/* ---------- historial de accesos ---------- */
+function anotarAcceso_(u, p, modulo, origen) {
+  hoja_('ACCESOS').appendRow([ahora_(), u.usuario, p.nombre || u.nombre, p.apellido || '', p.correo || u.correo,
+    String(p.dispositivo || '').slice(0, 80), NOMBRE_ACC[modulo] || modulo || '', origen || '']);
+  return { ok: true };
+}
+/* Solo el administrador: últimos inicios de sesión (más recientes primero) */
+function historial_(p) {
+  const sh = hoja_('ACCESOS'), n = sh.getLastRow() - 1;
+  if (n < 1) return { ok: true, accesos: [] };
+  const max = Math.min(n, Math.max(100, Math.min(Number(p.max) || 3000, 10000)));
+  const v = sh.getRange(sh.getLastRow() - max + 1, 1, max, 8).getDisplayValues();
+  const clave = {}; Object.keys(NOMBRE_ACC).forEach(k => clave[norm_(NOMBRE_ACC[k])] = k);
+  return { ok: true, total: n, accesos: v.reverse().filter(r => r[0]).map(r => ({
+    fecha: r[0], usuario: r[1], nombre: [r[2], r[3]].filter(String).join(' '), correo: r[4], dispositivo: r[5],
+    modulo: clave[norm_(r[6])] || (r[6] ? r[6] : 'portada'), origen: r[7] || 'Portada' })) };
+}
+
 /* ---------- reportes ---------- */
 function registrarReporte_(u, modulo) {
   if (!MODULOS[modulo]) return { ok: false, error: 'Grupo de reporte desconocido.' };
@@ -125,6 +154,8 @@ function doPost(e) {
       case 'logout':   PropertiesService.getScriptProperties().deleteProperty('tok_' + p.token); return json_({ ok: true });
       case 'reporte':  return json_(conSesion_(p.token, false, u => registrarReporte_(u, p.modulo)));
       case 'reportes': return json_(conSesion_(p.token, true, () => reportes_()));
+      case 'acceso':   return json_(conSesion_(p.token, false, u => NOMBRE_MOD[p.modulo] ? anotarAcceso_(u, p, p.modulo, 'Portada') : { ok: false, error: 'Módulo desconocido.' }));
+      case 'historial':return json_(conSesion_(p.token, true, () => historial_(p)));
       default:         return json_({ ok: false, error: 'Acción desconocida: ' + p.action });
     }
   } catch (err) { return json_({ ok: false, error: String(err && err.message || err) }); }
