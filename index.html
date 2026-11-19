@@ -314,6 +314,15 @@ html[data-tema="oscuro"] .acc-ilus span{background:rgba(255,255,255,.18)}html[da
 .acc-tw td small{color:var(--muted);font-weight:700}
 .acc-mas{display:block;margin:0 auto 16px}
 @media (max-width:700px){ .acc-kpis{grid-template-columns:repeat(2,1fr)} .acc-barra label{flex:1 1 140px} .acc-barra .btn{flex:1 1 100%} }
+
+/* ---------- SIN CONEXIÓN ---------- */
+.sin-red-aviso{display:none;gap:12px;align-items:flex-start;margin:18px 0 0;border-radius:20px;padding:12px 16px;background:#fff3e0;color:#7a4300;border:2px solid #f2a33a;font-size:14px;line-height:1.4}
+.sin-red-aviso span{font-size:22px}.sin-red-aviso b{display:block;font-size:15px;font-weight:900}
+html[data-tema="oscuro"] .sin-red-aviso{background:rgba(242,163,58,.14);color:#f6c27a;border-color:rgba(242,163,58,.5)}
+body.sin-red .sin-red-aviso{display:flex}
+.mod-sinred{display:none;border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:900;background:#f2a33a;color:#3a2000;white-space:nowrap}
+body.sin-red .mod-sinred{display:inline-block}
+@media (max-width:480px){ .mod-sinred .l{display:none} }
 </style>
 <script src="config.js"></script>
 </head>
@@ -355,6 +364,7 @@ html[data-tema="oscuro"] .acc-ilus span{background:rgba(255,255,255,.18)}html[da
     </div>
   </div>
   <div class="envoltura">
+    <div class="sin-red-aviso" id="avisoRed" role="status"><span>📡</span><div><b>Sin conexión</b>Calibración de boquillas y Catálogo de equipo funcionan sin internet con los datos guardados. Lo que registre se sube solo cuando vuelva la señal. Dashboard Drones muestra lo último que descargó.</div></div>
     <section class="hero am-sube">
       <div class="hero-txt">
         <small class="am-eyebrow" id="fechaHoy">Ingenio Madre Tierra</small>
@@ -453,6 +463,7 @@ html[data-tema="oscuro"] .acc-ilus span{background:rgba(255,255,255,.18)}html[da
   <div class="barra">
     <button class="pildora blanca" type="button" data-ir="inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Portada</button>
     <h2 id="tituloModulo"></h2>
+    <span class="mod-sinred" id="modSinRed"><span class="l">Módulo </span>sin conexión</span>
     <span class="sigla">MDE MT</span>
     <button class="pildora tema-btn" data-tema-btn type="button"></button>
   </div>
@@ -646,7 +657,7 @@ function entrarPortada(){
   vis.forEach((t, i) => t.style.gridColumn = (vis.length % 2 && i === vis.length - 1) ? '1 / -1' : '');
   $$('[data-estado]').forEach(e => {
     const ok = SES.mods ? SES.mods[e.dataset.estado] !== false : true;
-    e.textContent = ok ? 'Conectado' : 'Pedirá ingreso';
+    e.textContent = !ok ? 'Pedirá ingreso' : document.body.classList.contains('sin-red') ? (e.dataset.estado === 'drones' ? 'Sin conexión · últimos datos' : 'Sin conexión · funciona offline') : 'Conectado';
     e.classList.toggle('ok', ok);
   });
   amPortada();
@@ -680,7 +691,8 @@ function abrirModulo(k, alListo){
     f.src = m.url;
     f.title = m.nombre;
     f.allow = 'camera; geolocation; fullscreen; clipboard-write';
-    f.addEventListener('load', () => { $('#cargando').classList.add('oculto'); vigilarReportes(k, f); });
+    f.addEventListener('load', () => { $('#cargando').classList.add('oculto'); vigilarReportes(k, f);
+      if (document.body.classList.contains('sin-red')) setTimeout(() => { try { const w = f.contentWindow; if (w.setConexion) w.setConexion(false); } catch(e){} }, 800); });
     $('#marcos').appendChild(f);
     marcos[k] = f;
     anotarAcceso(k);
@@ -849,12 +861,44 @@ $('#accCsv').onclick = () => {
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 };
 
+
+/* ============================ sin conexión ============================ */
+function pintarEstadoRed(){
+  const off = document.body.classList.contains('sin-red');
+  $$('[data-estado]').forEach(e => { if (!e.classList.contains('ok')) return; e.textContent = !off ? 'Conectado' : (e.dataset.estado === 'drones' ? 'Sin conexión · últimos datos' : 'Sin conexión · funciona offline'); });
+  const ks = ['drones','calibracion','catalogo'].filter(puede), ok = ks.filter(k => !SES.mods || SES.mods[k] !== false).length;
+  $('#nMods').textContent = off ? 'Sin conexión · trabajando con datos guardados' : `${ok} de ${ks.length} módulos conectados`;
+}
+function marcarRed(on){
+  const antes = !document.body.classList.contains('sin-red');
+  document.body.classList.toggle('sin-red', !on);
+  if (antes === on) return;
+  if (SES) { try { pintarEstadoRed(); } catch(e){} }
+  // avisa a los módulos abiertos para que revisen su conexión (y suban lo pendiente si volvió)
+  Object.values(marcos || {}).forEach(f => { try { const w = f.contentWindow; if (w.ping) w.ping(); if (w.pingRed) w.pingRed(); if (!on && w.setConexion) w.setConexion(false); } catch(e){} });
+}
+async function probarRed(){
+  if (navigator.onLine === false) return marcarRed(false);
+  try {
+    const u = /^https:\/\/script\.google\.com\//.test(API_MDE) ? API_MDE : null;
+    if (!u) return marcarRed(true);
+    const c = new AbortController(), t = setTimeout(() => c.abort(), 8000);
+    await fetch(u, { method:'POST', body: JSON.stringify({ action:'ping' }), signal:c.signal }); clearTimeout(t);
+    marcarRed(true);
+  } catch(e){ marcarRed(false); }
+}
+window.addEventListener('online', probarRed);
+window.addEventListener('offline', () => marcarRed(false));
+setInterval(probarRed, 30000);
+probarRed();
+if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+
 /* ============================ amanecer ============================ */
 function amPortada(){
   try {
     $('#fechaHoy').textContent = 'Ingenio Madre Tierra · ' + new Intl.DateTimeFormat('es-GT', { weekday:'long', day:'numeric', month:'long', timeZone:'America/Guatemala' }).format(new Date());
     const ks = ['drones','calibracion','catalogo'].filter(puede), ok = ks.filter(k => !SES.mods || SES.mods[k] !== false).length;
-    $('#nMods').textContent = `${ok} de ${ks.length} módulos conectados`;
+    $('#nMods').textContent = document.body.classList.contains('sin-red') ? 'Sin conexión · trabajando con datos guardados' : `${ok} de ${ks.length} módulos conectados`;
     $('#chipRol').textContent = esAdmin() ? 'Administrador' : (SES.rol === 'PUBLICO' ? 'Público' : 'Usuario');
     if (!$('#heroFig').innerHTML) $('#heroFig').innerHTML = amEscena();
     $$('[data-am-escena="dron"]').forEach(e => { if (!e.innerHTML) e.innerHTML = amEscena({ solX:520 }); });
